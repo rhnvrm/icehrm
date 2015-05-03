@@ -55,7 +55,7 @@ if(!empty($_REQUEST['ft'])){
 			$countFilterQueryData = $response[1];
 		}else{
 			
-			$defaultFilterResp = $this->buildDefaultFilterQuery($filter);
+			$defaultFilterResp = BaseService::getInstance()->buildDefaultFilterQuery($filter);
 			$countFilterQuery = $defaultFilterResp[0];
 			$countFilterQueryData = $defaultFilterResp[1];
 		}
