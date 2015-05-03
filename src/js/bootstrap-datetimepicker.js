@@ -1015,6 +1015,8 @@
       if (!this.isInput) {
         $(document).on(
           'mousedown.datetimepicker' + this.id, $.proxy(this.hide, this));
+        
+        $('.bootstrap-datetime-close-btn').on('click',$.proxy(this.hide, this));
       }
     },
 
@@ -1164,6 +1166,7 @@
                 TPGlobal.getTemplate(is12Hours, showSeconds) +
               '</div>' +
             '</li>' +
+            '<li><button class="bootstrap-datetime-close-btn btn btn-primary pull-right" style="margin-top:5px"><i class="fa fa-check"></i> Ok</button></li>' +
           '</ul>' +
         '</div>'
       );

@@ -98,10 +98,12 @@
 			if (!this.isInput) {
 				$(document).on('mousedown', $.proxy(this.hide, this));
 			}
+			
 			this.element.trigger({
 				type: 'show',
 				date: this.date
 			});
+			
 		},
 		
 		hide: function(){
@@ -302,6 +304,8 @@
 								date: this.date,
 								viewMode: DPGlobal.modes[this.viewMode].clsName
 							});
+							
+							this.hide();
 						}
 						break;
 				}
