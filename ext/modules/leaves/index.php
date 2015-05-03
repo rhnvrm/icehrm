@@ -80,11 +80,11 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 var modJsList = new Array();
 
 modJsList['tabEmployeeLeaveAll'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeaveAll','','date_start desc');
-modJsList['tabEmployeeLeaveApproved'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeaveApproved',{"status":"Approved"});
+modJsList['tabEmployeeLeaveApproved'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeaveApproved',{"status":"Approved"},'date_start desc');
 modJsList['tabEmployeeLeaveApproved'].setShowAddNew(false);
-modJsList['tabEmployeeLeavePending'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeavePending',{"status":"Pending"});
+modJsList['tabEmployeeLeavePending'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeavePending',{"status":"Pending"},'date_start desc');
 modJsList['tabEmployeeLeavePending'].setShowAddNew(false);
-modJsList['tabSubEmployeeLeaveAll'] = new SubEmployeeLeaveAdapter('EmployeeLeave','SubEmployeeLeaveAll');
+modJsList['tabSubEmployeeLeaveAll'] = new SubEmployeeLeaveAdapter('EmployeeLeave','SubEmployeeLeaveAll','','date_start desc');
 modJsList['tabSubEmployeeLeaveAll'].setShowAddNew(false);
 modJsList['tabSubEmployeeLeaveAll'].setRemoteTable(true);
 modJsList['tabEmployeeLeaveEntitlement'] = new EmployeeLeaveEntitlementAdapter('EmployeeLeaveEntitlement','EmployeeLeaveEntitlement');
