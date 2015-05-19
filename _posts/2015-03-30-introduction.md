@@ -15,7 +15,7 @@ All HR Departments require a system to store their employee details securely. Ic
 centralize confidential employee information and define access permissions to authorized personnel to ensure 
 that employee information is both secure and accessible.
 
-![](https://icehrm.s3.amazonaws.com/web/EmpInfo.png =250x)
+![placeholder](https://icehrm.s3.amazonaws.com/web/EmpInfo.png "Large example image")
 
 **Automate your leave management**
 
