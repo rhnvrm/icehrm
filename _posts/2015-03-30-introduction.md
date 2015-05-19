@@ -15,7 +15,7 @@ All HR Departments require a system to store their employee details securely. Ic
 centralize confidential employee information and define access permissions to authorized personnel to ensure 
 that employee information is both secure and accessible.
 
-![placeholder](https://icehrm.s3.amazonaws.com/web/EmpInfo.png "Large example image")
+![](https://icehrm.s3.amazonaws.com/web/EmpInfo.png =300x "")
 
 **Automate your leave management**
 
@@ -25,6 +25,8 @@ process too confusing?
 IceHrms' powerful leave management module allows you to stop all time-off abuses and centralize all your 
 leave data. It allows you to add your own leave types, make exceptions to individual employees and groups 
 using leave rules and also supports leave accrual and carry forwarding leaves to next leave period.
+
+![](https://icehrm.s3.amazonaws.com/web/leave.png =300x "")
  
 **Track Every Bit of Time Spent**
 
@@ -33,3 +35,5 @@ employee attendance records in a centralized location?
 
 With the help of IceHrms' Timesteets module employees to update their own time sheets and send those for approval 
 to supervisors. The attendance module will keep track of employee punch-in and punch-out times.
+
+![](https://icehrm.s3.amazonaws.com/web/timetrack.png =300x "")
