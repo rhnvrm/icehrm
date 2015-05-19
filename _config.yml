@@ -1,0 +1,31 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Ice Hrm
+tagline:          ''
+description:      'Manage your employees easily with a robust and efficient Human Resource Management System'
+url:              http://thilinah.github.com/icehrm
+baseurl:          /icehrm/
+baseurlnoslash:   /icehrm
+
+author:
+  name:           'Thilina Hasantha'
+  url:            https://twitter.com/thilina84
+  image:		  http://graph.facebook.com/thilinah/picture?width=140&height=140
+
+paginate:         1
+
+# Custom vars
+version:          11.0
+
+social:
+  twitter:        https://twitter.com/icehrmapp
+  github:         https://github.com/thilinah/icehrm
+  linkedin:       http://lk.linkedin.com/in/thilinah
+  facebook:       https://www.facebook.com/icehrm

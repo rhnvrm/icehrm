@@ -1,1 +1,0 @@
-<script type="text/javascript" src="<?=BASE_URL.'/'.$group.'/'.$name.'/'?>lib.js?v=<?=$jsVersion?>"></script>

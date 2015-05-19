@@ -5,9 +5,6 @@
 	<buildpathentry kind="src" path="ext/admin/permissions"/>
 	<buildpathentry kind="src" path="ext/admin/settings"/>
 	<buildpathentry kind="src" path="ext/admin/users"/>
-	<buildpathentry kind="src" path="lib"/>
-	<buildpathentry kind="src" path="src"/>
-	<buildpathentry kind="src" path="test"/>
 	<buildpathentry kind="src" path="tp/adodb512"/>
 	<buildpathentry kind="src" path="tp/composer/vendor"/>
 	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
