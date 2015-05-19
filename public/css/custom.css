@@ -43,6 +43,12 @@ input:focus, textarea:focus {
 	position: relative !important;
 	float:left;
 	font-size: 19px;
+	color: rgba(0,0,0,.5);
+	background-color: #FFF !important;
+}
+
+.sidebar a {
+  color: #333 !important;
 }
 
 .sidebar a:hover{
