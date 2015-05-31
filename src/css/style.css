@@ -470,3 +470,7 @@ line-height: 17px;
 .list-group-item-text{
 	margin-bottom:5px;
 }
+
+.list-group-item{
+	padding-bottom:30px;
+}

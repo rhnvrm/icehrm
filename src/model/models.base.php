@@ -52,4 +52,8 @@ class ICEHRM_Record extends ADOdb_Active_Record{
 	public function executePostUpdateActions($obj){
 
 	}
+
+    public function postProcessGetData($obj){
+        return $obj;
+    }
 }

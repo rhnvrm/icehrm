@@ -49,6 +49,7 @@ $countFilterQueryData = array();
 if(!empty($_REQUEST['ft'])){
 	$filter = json_decode($_REQUEST['ft']);
 	if(!empty($filter)){
+		LogManager::getInstance()->debug("Filter:".print_r($filter,true));
 		if(method_exists($obj,'getCustomFilterQuery')){
 			$response = $obj->getCustomFilterQuery($filter);
 			$countFilterQuery = $response[0];

@@ -38,7 +38,7 @@
 <!-- Message Modal -->
 
 <!-- Plain Message Modal -->
-<div class="modal fade" id="plainMessageModel" tabindex="-1" role="dialog" aria-labelledby="plainMessageModelLabel" aria-hidden="true">
+<div class="modal fade" id="plainMessageModel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="plainMessageModelLabel" aria-hidden="true">
 <div class="modal-dialog">
 <div class="modal-content">	
 	<div class="modal-header" style="border-bottom:none;/*background-color: #3c8dbc;*/">

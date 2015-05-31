@@ -77,13 +77,15 @@ UIManager::getInstance()->setHomeLink($homeLink);
 		
 	    <script src="<?=BASE_URL?>themejs/bootstrap.js"></script>
 		<script src="<?=BASE_URL?>js/jquery.placeholder.js"></script>
-		
+		<script src="<?=BASE_URL?>js/base64.js"></script>
+
 		
 		<script src="<?=BASE_URL?>js/bootstrap-datepicker.js"></script>
 		<script src="<?=BASE_URL?>js/jquery.timepicker.js"></script>
 		<script src="<?=BASE_URL?>js/bootstrap-datetimepicker.js"></script>
 		<script src="<?=BASE_URL?>js/fullcalendar.min.js"></script>
 		<script src="<?=BASE_URL?>js/select2/select2.min.js"></script>
+		<script src="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/js/bootstrap-colorpicker.min.js"></script>
 		
 	   
 
@@ -93,6 +95,7 @@ UIManager::getInstance()->setHomeLink($homeLink);
 	    <link href="<?=BASE_URL?>css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>css/fullcalendar.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>js/select2/select2.css" rel="stylesheet">
+	    <link href="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 	    
 	    <link href="<?=BASE_URL?>themecss/AdminLTE.css" rel="stylesheet">
 	    

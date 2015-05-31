@@ -3,7 +3,7 @@
         </div><!-- ./wrapper -->
 		<script type="text/javascript">
 
-		
+
 		
 		for (var prop in modJsList) {
 			if(modJsList.hasOwnProperty(prop)){
@@ -15,7 +15,15 @@
 				modJsList[prop].setEmailTemplates(<?=json_encode($emailTemplates)?>);
 				<?php } ?>
 				modJsList[prop].setUser(<?=json_encode($user)?>);
-				modJsList[prop].initFieldMasterData();
+                <?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == "new"){?>
+                if(modJsList[prop].newInitObject == undefined || modJsList[prop].newInitObject == null){
+                    modJsList[prop].initFieldMasterData(null,modJsList[prop].renderForm);
+                }else{
+                    modJsList[prop].initFieldMasterData(null,modJsList[prop].renderForm, modJsList[prop].newInitObject);
+                }
+                <?php }else{ ?>
+                modJsList[prop].initFieldMasterData();
+                <?php } ?>
 				modJsList[prop].setBaseUrl('<?=BASE_URL?>');
 				modJsList[prop].setCurrentProfile(<?=json_encode($activeProfile)?>);
 				modJsList[prop].setInstanceId('<?=BaseService::getInstance()->getInstanceId()?>');
@@ -48,6 +56,9 @@
 
 		$(document).ready(function() {
 			$('#modTab a').click(function (e) {
+                if($(this).hasClass('dropdown-toggle')){
+                    return;
+                }
 				e.preventDefault();
 				$(this).tab('show');
 				modJs = modJsList[$(this).attr('id')];
@@ -67,7 +78,9 @@
 			if(tabName!= undefined && tabName != "" && modJsList[tabName] != undefined && modJsList[tabName] != null){
 				$("#"+tabName).click();	
 			}else{
+                <?php if(!isset($_REQUEST['action']) && $_REQUEST['action'] != "new"){?>
 				modJs.get([]);
+                <?php } ?>
 			}
 			
 

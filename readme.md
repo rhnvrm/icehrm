@@ -17,6 +17,15 @@ Once the application is installed use the username = admin and password = admin 
 
 Note: Please rename or delete the install folder (<ice hrm root>/app/install) since it could pose a security threat to your iCE Hrm instance.
 
+Release note v10.2
+-----------------
+
+### Fixes
+ * Improvements to date time pickers 
+ * Fixing fatal error due to non writable log file
+ * Latest changes from ice-framework v2.0
+ 
+
 Release note v10.1
 -----------------
 ### Features
