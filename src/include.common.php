@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 require dirname(__FILE__).'/composer/vendor/autoload.php';
 
 

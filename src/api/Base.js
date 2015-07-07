@@ -1277,11 +1277,17 @@ IceHRMBase.method('dataGroupToHtml', function(val, field) {
 			}
 			t = t.replace('#_'+key+'_#', itemVal);
 		}
+
+        if(field[1]['render'] != undefined && field[1]['render'] != null){
+            t = t.replace('#_renderFunction_#', field[1]['render'](item));
+        }
 		
 		itemHtml = $(t);
 		itemHtml.attr('fieldId',field[0]+"_div");
 		html.append(itemHtml);
 	}
+
+
 	
 	return html.wrap('<div>').parent().html();
 });

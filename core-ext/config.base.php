@@ -15,3 +15,5 @@ define('VERSION_DATE', '31/05/2015');
 if(!defined('CONTACT_EMAIL')){define('CONTACT_EMAIL','icehrm@gamonoid.com');}
 if(!defined('KEY_PREFIX')){define('KEY_PREFIX','IceHrm');}
 if(!defined('APP_SEC')){define('APP_SEC','dbcs234d2saaqw');}
+
+define('UI_SHOW_SWITCH_PROFILE', true);

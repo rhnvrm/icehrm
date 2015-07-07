@@ -115,7 +115,7 @@ class UIManager{
 	public function getMenuBlocks(){
 		$manuItems = array();
 		$manuItems[] = new MenuItemTemplate('menuButtonNotification', array());
-		if($this->user->user_level == "Admin"){
+		if($this->user->user_level == "Admin" && defined('UI_SHOW_SWITCH_PROFILE') && UI_SHOW_SWITCH_PROFILE){
 			$manuItems[] = new MenuItemTemplate('menuButtonSwitchProfile', array());
 		}
 		
@@ -162,6 +162,14 @@ class UIManager{
 		
 		return $menuHtml;
 	}
+
+    public function renderModule($moduleBuilder){
+        $str = '<div class="span9"><ul class="nav nav-tabs" id="modTab" style="margin-bottom:0px;margin-left:5px;border-bottom: none;">__tabHeaders__</ul><div class="tab-content">__tabPages__</div></div><script>__tabJs__</script>';
+        $str = str_replace("__tabHeaders__",$moduleBuilder->getTabHeadersHTML(), $str);
+        $str = str_replace("__tabPages__",$moduleBuilder->getTabPagesHTML(), $str);
+        $str = str_replace("__tabJs__",$moduleBuilder->getModJsHTML(), $str);
+        return $str;
+    }
 	
 }
 

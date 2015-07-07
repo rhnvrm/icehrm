@@ -450,3 +450,38 @@ SubAdapterBase.method('getSubHeader', function() {
 	var header = $('<a href="#" onclick="return false;" class="list-group-item" style="background:#eee;"><h4 class="list-group-item-heading">'+this.getSubHeaderTitle()+'</h4></a>');
 	return header;
 });
+
+
+
+/**
+ * IdNameAdapter
+ */
+
+function IdNameAdapter(endPoint) {
+    this.initAdapter(endPoint);
+}
+
+IdNameAdapter.inherits(AdapterBase);
+
+
+
+IdNameAdapter.method('getDataMapping', function() {
+    return [
+        "id",
+        "name"
+    ];
+});
+
+IdNameAdapter.method('getHeaders', function() {
+    return [
+        { "sTitle": "ID" ,"bVisible":false},
+        { "sTitle": "Name"}
+    ];
+});
+
+IdNameAdapter.method('getFormFields', function() {
+    return [
+        [ "id", {"label":"ID","type":"hidden"}],
+        [ "name", {"label":"Name","type":"text","validation":""}]
+    ];
+});

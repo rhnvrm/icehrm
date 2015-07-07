@@ -110,4 +110,6 @@ abstract class AbstractModuleManager{
 	protected function addModelClass($className){
 		$this->modelClasses[] = $className;
 	}
+
+
 }
