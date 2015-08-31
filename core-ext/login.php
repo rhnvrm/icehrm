@@ -7,9 +7,6 @@ if(empty($user)){
 	if(!empty($_REQUEST['username']) && !empty($_REQUEST['password'])){
 		$suser = null;
 		$ssoUserLoaded = false;
-		
-		include 'login.com.inc.php';
-		
 		if(empty($suser)){
 			$suser = new User();
 			$suser->Load("(username = ? or email = ?) and password = ?",array($_REQUEST['username'],$_REQUEST['username'],md5($_REQUEST['password'])));

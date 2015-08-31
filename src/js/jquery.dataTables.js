@@ -8737,17 +8737,32 @@
 		 *    } );
 		 */
 		"fnServerData": function ( sUrl, aoData, fnCallback, oSettings ) {
+
+            var n = sUrl.lastIndexOf("&_=");
+            var key = sUrl.substr(0,n);
+
+            var requestCache = new RequestCache();
+
+            var successFunction = function (json) {
+                if ( json.sError ) {
+                    oSettings.oApi._fnLog( oSettings, 0, json.sError );
+                }
+
+                requestCache.setData(key,json);
+
+                $(oSettings.oInstance).trigger('xhr', [oSettings, json]);
+                fnCallback( json );
+            };
+
+            var data = requestCache.getData(key);
+            if(data != null){
+                successFunction(data);
+            }
+
 			oSettings.jqXHR = $.ajax( {
 				"url":  sUrl,
 				"data": aoData,
-				"success": function (json) {
-					if ( json.sError ) {
-						oSettings.oApi._fnLog( oSettings, 0, json.sError );
-					}
-					
-					$(oSettings.oInstance).trigger('xhr', [oSettings, json]);
-					fnCallback( json );
-				},
+				"success": successFunction,
 				"dataType": "json",
 				"cache": false,
 				"type": oSettings.sServerMethod,

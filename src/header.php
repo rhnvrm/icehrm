@@ -26,19 +26,37 @@ if(empty($user)){
 	header("Location:".CLIENT_BASE_URL."login.php");
 }
 
-if($user->user_level == "Admin"){
-	$homeLink = HOME_LINK_ADMIN;
+if(empty($user->default_module)){
+    if($user->user_level == "Admin"){
+        $homeLink = HOME_LINK_ADMIN;
+    }else{
+        $homeLink = HOME_LINK_OTHERS;
+    }
 }else{
-	$homeLink = HOME_LINK_OTHERS;
+    $defaultModule = new Module();
+    $defaultModule->Load("id = ?",array($user->default_module));
+    $homeLink = CLIENT_BASE_URL."?g=".$defaultModule->mod_group."&&n=".$defaultModule->name.
+        "&m=".$defaultModule->mod_group."_".str_replace(" ","_",$defaultModule->menu);
 }
+
 
 //Check Module Permissions
 $modulePermissions = BaseService::getInstance()->loadModulePermissions($_REQUEST['g'], $_REQUEST['n'],$user->user_level);
 
 
 if(!in_array($user->user_level, $modulePermissions['user'])){
-	echo "You are not allowed to access this page";
-	exit();
+
+    if(!empty($user->user_roles)){
+        $userRoles = json_decode($user->user_roles,true);
+    }else{
+        $userRoles = array();
+    }
+    $commonRoles = array_intersect($modulePermissions['user_roles'], $userRoles);
+    if(empty($commonRoles)){
+        echo "You are not allowed to access this page";
+        exit();
+    }
+
 }
 
 
@@ -53,9 +71,7 @@ $companyName = SettingsManager::getInstance()->getSetting('Company: Name');
 //Load meta info
 $meta = json_decode(file_get_contents(MODULE_PATH."/meta.json"),true);
 
-UIManager::getInstance()->setCurrentUser($user);
-UIManager::getInstance()->setProfiles($profileCurrent, $profileSwitched);
-UIManager::getInstance()->setHomeLink($homeLink);
+include('configureUIManager.php');
 
 ?><!DOCTYPE html>
 <html>
@@ -99,8 +115,8 @@ UIManager::getInstance()->setHomeLink($homeLink);
 	    
 	    <link href="<?=BASE_URL?>themecss/AdminLTE.css" rel="stylesheet">
 	    
-	    <script src="<?=BASE_URL?>themejs/plugins/datatables/jquery.dataTables.js"></script>
-		<script src="<?=BASE_URL?>themejs/plugins/datatables/dataTables.bootstrap.js"></script>
+	    <script src="<?=BASE_URL?>themejs/plugins/datatables/jquery.dataTables.js?v=<?=$jsVersion?>"></script>
+		<script src="<?=BASE_URL?>themejs/plugins/datatables/dataTables.bootstrap.js?v=<?=$jsVersion?>"></script>
 		<script src="<?=BASE_URL?>themejs/AdminLTE/app.js"></script>
 	    
 	    
@@ -183,7 +199,7 @@ UIManager::getInstance()->setHomeLink($homeLink);
                     <ul class="sidebar-menu">
                     	
                         
-                        <?php if($user->user_level == 'Admin' || $user->user_level == 'Manager'){?>
+                        <?php if($user->user_level == 'Admin' || $user->user_level == 'Manager' || $user->user_level == 'Other'){?>
 			            
 			            <?php foreach($adminModules as $menu){?>
 			            	<?php if(count($menu['menu']) == 0){continue;}?>

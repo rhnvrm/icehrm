@@ -102,24 +102,24 @@ create table `Employees` (
 	 `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	 `employee_id` varchar(50) default null,
 	 `first_name` varchar(100) default '' not null,
-	 `middle_name` varchar(100) default '' not null,
-	 `last_name` varchar(100) default '' not null,
+	 `middle_name` varchar(100) default null,
+	 `last_name` varchar(100) default null,
 	 `nationality` bigint(20) default null,
 	 `birthday` DATETIME default '0000-00-00 00:00:00',
 	 `gender` enum('Male','Female') default NULL,
 	 `marital_status` enum('Married','Single','Divorced','Widowed','Other') default NULL,
-	 `ssn_num` varchar(100) default '',
-	 `nic_num` varchar(100) default '',
-	 `other_id` varchar(100) default '',
-	 `driving_license` varchar(100) default '',
+	 `ssn_num` varchar(100) default NULL,
+	 `nic_num` varchar(100) default NULL,
+	 `other_id` varchar(100) default NULL,
+	 `driving_license` varchar(100) default NULL,
 	 `driving_license_exp_date` date default '0000-00-00',
 	 `employment_status` bigint(20) default null,
 	 `job_title` bigint(20) default null,
 	 `pay_grade` bigint(20) null,
-	 `work_station_id` varchar(100) default '',
-	 `address1` varchar(100) default '',
-	 `address2` varchar(100) default '',
-	 `city` varchar(150) default '',
+	 `work_station_id` varchar(100) default NULL,
+	 `address1` varchar(100) default NULL,
+	 `address2` varchar(100) default NULL,
+	 `city` varchar(150) default NULL,
 	 `country` char(2) default null,
 	 `province` bigint(20) default null,
 	 `postal_code` varchar(20) default null,
@@ -144,6 +144,9 @@ create table `Employees` (
 	 `custom10` varchar(250) default null,
 	 `termination_date` DATETIME default '0000-00-00 00:00:00',
 	 `notes` text default null,
+	 `status` enum('Active','Terminated') default 'Active',
+   `ethnicity` bigint(20) default null,
+   `immigration_status` bigint(20) default null,
 	 CONSTRAINT `Fk_Employee_Nationality` FOREIGN KEY (`nationality`) REFERENCES `Nationality` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
 	 CONSTRAINT `Fk_Employee_JobTitle` FOREIGN KEY (`job_title`) REFERENCES `JobTitles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
 	 CONSTRAINT `Fk_Employee_EmploymentStatus` FOREIGN KEY (`employment_status`) REFERENCES `EmploymentStatus` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -154,7 +157,36 @@ create table `Employees` (
 	 CONSTRAINT `Fk_Employee_PayGrades` FOREIGN KEY (`pay_grade`) REFERENCES `PayGrades` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
 	 primary key  (`id`),
 	 unique key `employee_id` (`employee_id`)
-	 
+
+) engine=innodb default charset=utf8;
+
+create table `ArchivedEmployees` (
+	 `id` bigint(20) NOT NULL AUTO_INCREMENT,
+	 `ref_id` bigint(20) NOT NULL,
+	 `employee_id` varchar(50) default null,
+	 `first_name` varchar(100) default '' not null,
+	 `last_name` varchar(100) default '' not null,
+	 `gender` enum('Male','Female') default NULL,
+	 `ssn_num` varchar(100) default '',
+	 `nic_num` varchar(100) default '',
+	 `other_id` varchar(100) default '',
+	 `work_email` varchar(100) default null,
+	 `joined_date` DATETIME default '0000-00-00 00:00:00',
+	 `confirmation_date` DATETIME default '0000-00-00 00:00:00',
+	 `supervisor` bigint(20) default null,
+	 `department` bigint(20) default null,
+	 `termination_date` DATETIME default '0000-00-00 00:00:00',
+	 `notes` text default null,
+	 `data` longtext default null,
+	 primary key  (`id`)
+
+) engine=innodb default charset=utf8;
+
+create table `UserRoles` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) default null,
+  primary key  (`id`),
+  unique key `name` (`name`)
 ) engine=innodb default charset=utf8;
 
 create table `Users` (
@@ -163,7 +195,9 @@ create table `Users` (
 	`email` varchar(100) default null,
 	`password` varchar(100) default null,
 	`employee` bigint(20) null,
-	`user_level` enum('Admin','Employee','Manager') default NULL,
+	`default_module` bigint(20) null,
+	`user_level` enum('Admin','Employee','Manager','Other') default NULL,
+  `user_roles` text null,
 	`last_login` timestamp default '0000-00-00 00:00:00',
 	`last_update` timestamp default '0000-00-00 00:00:00',
 	`created` timestamp default '0000-00-00 00:00:00',
@@ -193,8 +227,7 @@ create table `EmployeeEducations` (
 	`date_end` date default '0000-00-00',
 	CONSTRAINT `Fk_EmployeeEducations_Educations` FOREIGN KEY (`education_id`) REFERENCES `Educations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT `Fk_EmployeeEducations_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	primary key  (`id`),
-	unique key (`employee`,`education_id`)
+	primary key  (`id`)
 ) engine=innodb default charset=utf8;
 
 create table `EmployeeCertifications` (
@@ -249,19 +282,6 @@ create table `EmployeeDependents` (
 ) engine=innodb default charset=utf8;
 
 
-create table `EmployeeSalary` (
-	`id` bigint(20) NOT NULL AUTO_INCREMENT,
-	`employee` bigint(20) NOT NULL,
-	`component` varchar(100) NOT NULL,
-	`pay_frequency` enum('Hourly','Daily','Bi Weekly','Weekly','Semi Monthly','Monthly') default NULL,
-	`currency` bigint(20) NOT NULL,
-	`amount` decimal(10,2) NOT NULL,
-	`details` text default null,
-	CONSTRAINT `Fk_EmployeeSalary_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT `Fk_EmployeeSalary_Currency` FOREIGN KEY (`currency`) REFERENCES `CurrencyTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	primary key  (`id`)
-) engine=innodb default charset=utf8;
-
 
 create table `LeaveTypes` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -276,6 +296,7 @@ create table `LeaveTypes` (
 	`carried_forward_leave_availability` int(11) NULL default 365,
 	`propotionate_on_joined_date` enum('No','Yes') default 'No',
 	`leave_group` bigint(20) NULL,
+	`leave_color` varchar(10) NULL,
 	primary key  (`id`),
 	unique key (`name`)
 ) engine=innodb default charset=utf8;
@@ -357,7 +378,7 @@ create table `EmployeeLeaves` (
 	`date_start` date default '0000-00-00',
 	`date_end` date default '0000-00-00',
 	`details` text default null,
-	`status` enum('Approved','Pending','Rejected') default 'Pending',
+	`status` enum('Approved','Pending','Rejected','Cancellation Requested','Cancelled') default 'Pending',
 	`attachment` varchar(100) NULL,
 	CONSTRAINT `Fk_EmployeeLeaves_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT `Fk_EmployeeLeaves_LeaveTypes` FOREIGN KEY (`leave_type`) REFERENCES `LeaveTypes` (`id`),
@@ -370,8 +391,8 @@ create table `EmployeeLeaveLog` (
 	`employee_leave` bigint(20) NOT NULL,
 	`user_id` bigint(20) NULL,
 	`data` varchar(500) NOT NULL,
-	`status_from` enum('Approved','Pending','Rejected') default 'Pending',
-	`status_to` enum('Approved','Pending','Rejected') default 'Pending',
+	`status_from` enum('Approved','Pending','Rejected','Cancellation Requested','Cancelled') default 'Pending',
+	`status_to` enum('Approved','Pending','Rejected','Cancellation Requested','Cancelled') default 'Pending',
 	`created` timestamp default '0000-00-00 00:00:00',
 	CONSTRAINT `Fk_EmployeeLeaveLog_EmployeeLeaves` FOREIGN KEY (`employee_leave`) REFERENCES `EmployeeLeaves` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT `Fk_EmployeeLeaveLog_Users` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -528,6 +549,7 @@ create table `Modules` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,
 	`menu` varchar(30) NOT NULL,
 	`name` varchar(100) NOT NULL,
+	`label` varchar(100) NOT NULL,
 	`icon` VARCHAR( 50 ) NULL,
 	`mod_group` varchar(30) NOT NULL,
 	`mod_order` INT(11) NULL,
@@ -535,6 +557,7 @@ create table `Modules` (
 	`version` varchar(10) default '',
 	`update_path` varchar(500) default '',
 	`user_levels` varchar(500) NOT NULL,
+  `user_roles` text null,
 	primary key  (`id`),
 	UNIQUE KEY `Modules_name_modgroup` (`name`,`mod_group`)
 ) engine=innodb default charset=utf8;
@@ -714,5 +737,164 @@ create table `EmployeeTravelRecords` (
 	CONSTRAINT `Fk_EmployeeTravelRecords_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
 	primary key  (`id`)
 ) engine=innodb default charset=utf8;
+
+
+create table `RestAccessTokens` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`userId` bigint(20) NOT NULL,
+	`hash` varchar(32) default null,
+	`token` varchar(500) default null,
+	`created` DATETIME default '0000-00-00 00:00:00',
+	`updated` DATETIME default '0000-00-00 00:00:00',
+	primary key  (`id`),
+	unique key `userId` (`userId`)
+) engine=innodb default charset=utf8;
+
+create table `FieldNameMappings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `textOrig` varchar(200) default null,
+  `textMapped` varchar(200) default null,
+  `display` enum('Form','Table and Form','Hidden') default 'Form',
+  `created` DATETIME default '0000-00-00 00:00:00',
+  `updated` DATETIME default '0000-00-00 00:00:00',
+  primary key  (`id`),
+  unique key `name` (`name`)
+) engine=innodb default charset=utf8;
+
+create table `CustomFields` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `data` text default null,
+  `display` enum('Form','Table and Form','Hidden') default 'Form',
+  `created` DATETIME default '0000-00-00 00:00:00',
+  `updated` DATETIME default '0000-00-00 00:00:00',
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+
+create table `SalaryComponentType` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`code` varchar(10) NOT NULL,
+	`name` varchar(100) NOT NULL,
+	primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `SalaryComponent` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(100) NOT NULL,
+  `componentType` bigint(20) NULL,
+  `details` text default null,
+  CONSTRAINT `Fk_SalaryComponent_SalaryComponentType` FOREIGN KEY (`componentType`) REFERENCES `SalaryComponentType` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+	primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `ImmigrationStatus` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(100) NOT NULL,
+	primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `Ethnicity` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`name` varchar(100) NOT NULL,
+	primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `EmployeeImmigrationStatus` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `employee` bigint(20) NOT NULL,
+  `status` bigint(20) NOT NULL,
+  CONSTRAINT `Fk_EmployeeImmigrationStatus_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Fk_EmployeeImmigrationStatus_Type` FOREIGN KEY (`status`) REFERENCES `ImmigrationStatus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `EmployeeEthnicity` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `employee` bigint(20) NOT NULL,
+  `ethnicity` bigint(20) NOT NULL,
+  CONSTRAINT `Fk_EmployeeEthnicity_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Fk_EmployeeEthnicity_Ethnicity` FOREIGN KEY (`ethnicity`) REFERENCES `Ethnicity` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+
+create table `EmployeeSalary` (
+	`id` bigint(20) NOT NULL AUTO_INCREMENT,
+	`employee` bigint(20) NOT NULL,
+	`component` bigint(20) NOT NULL,
+	`pay_frequency` enum('Hourly','Daily','Bi Weekly','Weekly','Semi Monthly','Monthly') default NULL,
+	`currency` bigint(20) NULL,
+	`amount` decimal(10,2) NOT NULL,
+	`details` text default null,
+	CONSTRAINT `Fk_EmployeeSalary_Employee` FOREIGN KEY (`employee`) REFERENCES `Employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT `Fk_EmployeeSalary_Currency` FOREIGN KEY (`currency`) REFERENCES `CurrencyTypes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `Deductions` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `contributor` enum('Employee','Employer') default NULL,
+  `type` enum('Fixed','Percentage') default NULL,
+  `percentage_type` enum('On Component','On Component Type') default NULL,
+  `componentType` bigint(20) NULL,
+  `component` bigint(20) NULL,
+  `rangeAmounts` text default null,
+  `country` bigint(20) NULL,
+  CONSTRAINT `Fk_Deductions_Country` FOREIGN KEY (`country`) REFERENCES `Country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `Tax` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `contributor` enum('Employee','Employer') default NULL,
+  `type` enum('Fixed','Percentage') default NULL,
+  `percentage_type` enum('On Component','On Component Type') default NULL,
+  `componentType` bigint(20) NULL,
+  `component` bigint(20) NULL,
+  `rangeAmounts` text default null,
+  `country` bigint(20) NULL,
+  CONSTRAINT `Fk_Tax_Country` FOREIGN KEY (`country`) REFERENCES `Country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `TaxRules` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `apply` enum('Yes','No') default 'Yes',
+  `application_type` enum('All','Condition - OR','Condition - AND') default 'All',
+  `tax` bigint(20) NOT NULL,
+  `job_title` bigint(20) NULL,
+  `ethnicity` bigint(20) NULL,
+  `nationality` bigint(20) NULL,
+  `immigration_status` bigint(20) NULL,
+  `pay_grade` bigint(20) NULL,
+  `country` bigint(20) NULL,
+  CONSTRAINT `Fk_TaxRules_Tax` FOREIGN KEY (`tax`) REFERENCES `Tax` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Fk_TaxRules_Country` FOREIGN KEY (`country`) REFERENCES `Country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+create table `DeductionRules` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `apply` enum('Yes','No') default 'Yes',
+  `application_type` enum('All','Condition - OR','Condition - AND') default 'All',
+  `deduction` bigint(20) NOT NULL,
+  `job_title` bigint(20) NULL,
+  `ethnicity` bigint(20) NULL,
+  `nationality` bigint(20) NULL,
+  `immigration_status` bigint(20) NULL,
+  `pay_grade` bigint(20) NULL,
+  `country` bigint(20) NULL,
+  CONSTRAINT `Fk_DeductionRules_Deductions` FOREIGN KEY (`deduction`) REFERENCES `Deductions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `Fk_DeductionRules_Country` FOREIGN KEY (`country`) REFERENCES `Country` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  primary key  (`id`)
+) engine=innodb default charset=utf8;
+
+
 
 

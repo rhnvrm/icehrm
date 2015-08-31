@@ -157,3 +157,62 @@ AttendanceAdapter.method('saveSuccessCallback', function(callBackData) {
 AttendanceAdapter.method('saveFailCallback', function(callBackData) {
 	this.showMessage("Error saving attendance entry", callBackData);
 });
+
+
+
+/*
+ Attendance Status
+ */
+
+
+function AttendanceStatusAdapter(endPoint,tab,filter,orderBy) {
+    this.initAdapter(endPoint,tab,filter,orderBy);
+}
+
+AttendanceStatusAdapter.inherits(AdapterBase);
+
+
+
+AttendanceStatusAdapter.method('getDataMapping', function() {
+    return [
+        "id",
+        "employee",
+        "status"
+    ];
+});
+
+AttendanceStatusAdapter.method('getHeaders', function() {
+    return [
+        { "sTitle": "ID" ,"bVisible":false},
+        { "sTitle": "Employee" },
+        { "sTitle": "Clocked In Status" }
+    ];
+});
+
+AttendanceStatusAdapter.method('getFormFields', function() {
+    return [
+
+    ];
+});
+
+AttendanceStatusAdapter.method('getFilters', function() {
+    return [
+        [ "employee", {"label":"Employee","type":"select2","allow-null":false,"remote-source":["Employee","id","first_name+last_name"]}]
+
+    ];
+});
+
+AttendanceStatusAdapter.method('getActionButtonsHtml', function(id,data) {
+
+
+    html = '<div class="online-button-_COLOR_"></div>';
+    html = html.replace(/_BASE_/g,this.baseUrl);
+    if(data[2] == "Not Clocked In"){
+        html = html.replace(/_COLOR_/g,'gray');
+    }else if(data[2] == "Clocked Out"){
+        html = html.replace(/_COLOR_/g,'yellow');
+    }else if(data[2] == "Clocked In"){
+        html = html.replace(/_COLOR_/g,'green');
+    }
+    return html;
+});

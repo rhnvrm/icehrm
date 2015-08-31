@@ -1,25 +1,4 @@
 <?php
-/*
-This file is part of iCE Hrm.
-
-iCE Hrm is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-iCE Hrm is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with iCE Hrm. If not, see <http://www.gnu.org/licenses/>.
-
-------------------------------------------------------------------
-
-Original work Copyright (c) 2012 [Gamonoid Media Pvt. Ltd]  
-Developer: Thilina Hasantha (thilina.hasantha[at]gmail.com / facebook.com/thilinah)
- */
 
 $moduleName = 'employee_leave';
 define('MODULE_PATH',dirname(__FILE__));
@@ -33,6 +12,7 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 		<li class=""><a id="tabEmployeeLeaveApproved" href="#tabPageEmployeeLeaveApproved">Approved Leaves</a></li>
 		<li class=""><a id="tabEmployeeLeavePending" href="#tabPageEmployeeLeavePending">Pending Leaves</a></li>
 		<li class=""><a id="tabSubEmployeeLeaveAll" href="#tabPageSubEmployeeLeaveAll">Subordinate Leaves</a></li>
+		<li class=""><a id="tabSubEmployeeLeaveCancel" href="#tabPageSubEmployeeLeaveCancel">Cancellation Requests</a></li>
 	</ul>
 	 
 	<div class="tab-content">
@@ -73,6 +53,14 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 		
 			</div>
 		</div>
+		<div class="tab-pane" id="tabPageSubEmployeeLeaveCancel">
+			<div id="SubEmployeeLeaveCancel" class="reviewBlock" data-content="List" style="padding-left:5px;">
+		
+			</div>
+			<div id="SubEmployeeLeaveCancelForm" class="reviewBlock" data-content="Form" style="padding-left:5px;display:none;">
+		
+			</div>
+		</div>
 	</div>
 
 </div>
@@ -80,13 +68,16 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 var modJsList = new Array();
 
 modJsList['tabEmployeeLeaveAll'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeaveAll','','date_start desc');
-modJsList['tabEmployeeLeaveApproved'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeaveApproved',{"status":"Approved"},'date_start desc');
+modJsList['tabEmployeeLeaveApproved'] = new EmployeeApprovedLeaveAdapter('EmployeeLeave','EmployeeLeaveApproved',{"status":"Approved"},'date_start desc');
 modJsList['tabEmployeeLeaveApproved'].setShowAddNew(false);
-modJsList['tabEmployeeLeavePending'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeavePending',{"status":"Pending"},'date_start desc');
+modJsList['tabEmployeeLeavePending'] = new EmployeeLeaveAdapter('EmployeeLeave','EmployeeLeavePending',{"status":"Pending"});
 modJsList['tabEmployeeLeavePending'].setShowAddNew(false);
 modJsList['tabSubEmployeeLeaveAll'] = new SubEmployeeLeaveAdapter('EmployeeLeave','SubEmployeeLeaveAll','','date_start desc');
 modJsList['tabSubEmployeeLeaveAll'].setShowAddNew(false);
 modJsList['tabSubEmployeeLeaveAll'].setRemoteTable(true);
+modJsList['tabSubEmployeeLeaveCancel'] = new SubEmployeeLeaveAdapter('EmployeeLeave','SubEmployeeLeaveCancel',{"status":"Cancellation Requested"},'date_start desc');
+modJsList['tabSubEmployeeLeaveCancel'].setShowAddNew(false);
+modJsList['tabSubEmployeeLeaveCancel'].setRemoteTable(true);
 modJsList['tabEmployeeLeaveEntitlement'] = new EmployeeLeaveEntitlementAdapter('EmployeeLeaveEntitlement','EmployeeLeaveEntitlement');
 modJsList['tabEmployeeLeaveEntitlement'].setShowAddNew(false);
 
@@ -109,6 +100,7 @@ var modJs = modJsList['tabEmployeeLeaveAll'];
 				  	<option value="Approved">Approved</option>
 				  	<option value="Pending">Pending</option>
 				  	<option value="Rejected">Rejected</option>
+				  	<option value="Cancelled">Cancelled</option>
 			  	</select>
 			</div>
 		</div>

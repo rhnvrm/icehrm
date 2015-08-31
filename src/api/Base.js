@@ -38,6 +38,7 @@ function IceHRMBase() {
 	this.showFormOnPopup = false;
 	this.filtersAlreadySet = false;
 	this.currentFilterString = "";
+    this.sorting = 0;
 }
 
 this.fieldTemplates = null;
@@ -73,6 +74,10 @@ IceHRMBase.method('setNoJSONRequests' , function(val) {
 
 IceHRMBase.method('setPermissions' , function(permissions) {
 	this.permissions = permissions;
+});
+
+IceHRMBase.method('sortingStarted' , function(val) {
+	this.sorting = val;
 });
 
 /**
@@ -431,6 +436,15 @@ IceHRMBase.method('getTableTopButtonHtml', function() {
 	return html;
 });
 
+
+IceHRMBase.method('getActionButtonHeader', function() {
+    return { "sTitle": "", "sClass": "center" };
+});
+
+IceHRMBase.method('getTableHTMLTemplate', function() {
+    return '<div class="box-body table-responsive"><table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="grid"></table></div>';
+});
+
 /**
  * Create the data table on provided element id
  * @method createTable
@@ -449,7 +463,7 @@ IceHRMBase.method('createTable', function(elementId) {
 	var data = this.getTableData();
 	
 	if(this.showActionButtons()){
-		headers.push({ "sTitle": "", "sClass": "center" });
+        headers.push(this.getActionButtonHeader());
 	}
 	
 	
@@ -460,7 +474,7 @@ IceHRMBase.method('createTable', function(elementId) {
 	}
 	
 	var html = "";
-	html = this.getTableTopButtonHtml()+'<div class="box-body table-responsive"><table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="grid"></table></div>';
+	html = this.getTableTopButtonHtml() + this.getTableHTMLTemplate();
 	/*
 	if(this.getShowAddNew()){
 		html = this.getTableTopButtonHtml()+'<div class="box-body table-responsive"><table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="grid"></table></div>';
@@ -483,18 +497,11 @@ IceHRMBase.method('createTable', function(elementId) {
 			},
 			"aaData": data,
 			"aoColumns": headers,
-			"bSort": false,
+			"bSort": true,
 			"iDisplayLength": 15,
 			"iDisplayStart": start
 		};
-	
-	/*
-	 "fnInitComplete": function(oSettings, json) {
-				if(activePage != undefined && activePage != null){
-					$('#'+elementId+" .dataTables_paginate a:contains('"+activePage+"')").click();
-				}
-			}
-	 */
+
 	
 	var customTableParams = this.getCustomTableParams();
 	
@@ -525,7 +532,7 @@ IceHRMBase.method('createTableServer', function(elementId) {
 	headers.push({ "sTitle": "", "sClass": "center" });
 	
 	var html = "";
-	html = this.getTableTopButtonHtml()+'<div class="box-body table-responsive"><table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="grid"></table></div>';
+	html = this.getTableTopButtonHtml() + this.getTableHTMLTemplate();
 	/*
 	if(this.getShowAddNew()){
 		html = this.getTableTopButtonHtml()+'<div class="box-body table-responsive"><table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="grid"></table></div>';
@@ -552,7 +559,7 @@ IceHRMBase.method('createTableServer', function(elementId) {
 		    "bServerSide": true,
 		    "sAjaxSource": that.getDataUrl(that.getDataMapping()),
 			"aoColumns": headers,
-			"bSort": false,
+			"bSort": true,
 			"parent":that,
 			"iDisplayLength": 15,
 			"iDisplayStart": start

@@ -47,6 +47,9 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 <script>
 var modJsList = new Array();
 modJsList['tabUser'] = new UserAdapter('User');
+<?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == "new" && isset($_REQUEST['object'])){?>
+modJsList['tabUser'].newInitObject = JSON.parse(Base64.decode('<?=$_REQUEST['object']?>'));
+<?php }?>
 
 var modJs = modJsList['tabUser'];
 

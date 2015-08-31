@@ -18,7 +18,7 @@ ModuleAdapter.inherits(AdapterBase);
 ModuleAdapter.method('getDataMapping', function() {
 	return [
 	        "id",
-	        "name",
+	        "label",
 	        "menu",
 	        "mod_group",
 	        "mod_order",
@@ -44,8 +44,9 @@ ModuleAdapter.method('getHeaders', function() {
 ModuleAdapter.method('getFormFields', function() {
 	return [
 	        [ "id", {"label":"ID","type":"hidden"}],
-	        [ "name", {"label":"Name","type":"text","validation":""}],
-	        [ "status", {"label":"Status","type":"select","source":[["Enabled","Enabled"],["Disabled","Disabled"]]}]
+	        [ "label", {"label":"Label","type":"text","validation":""}],
+	        [ "status", {"label":"Status","type":"select","source":[["Enabled","Enabled"],["Disabled","Disabled"]]}],
+            [ "user_levels", {"label":"User Levels","type":"select2multi","source":[["Admin","Admin"],["Manager","Manager"],["Employee","Employee"],["Other","Other"]]}]
 	];
 });
 

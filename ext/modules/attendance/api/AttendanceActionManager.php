@@ -33,7 +33,7 @@ class AttendanceActionManager extends SubActionManager{
 		//Find any open punch
 		$attendance = new Attendance();
 		$attendance->Load("employee = ? and DATE_FORMAT( in_time,  '%Y-%m-%d' ) = ? and (out_time is NULL or out_time = '0000-00-00 00:00:00')",array($employee->id,$date));
-		
+
 		if($attendance->employee == $employee->id){
 			//found an open punch
 			return new IceResponse(IceResponse::SUCCESS,$attendance);

@@ -1,6 +1,7 @@
 <?php
 //Version
 define('VERSION', '2.0');
+define('CACHE_VALUE', '2.0');
 define('VERSION_DATE', '12/03/2015');
 define('UI_SHOW_SWITCH_PROFILE', true);
 

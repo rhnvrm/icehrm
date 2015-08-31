@@ -4,7 +4,9 @@ if (!class_exists('SalaryModulesManager')) {
 	class SalaryModulesManager extends AbstractModuleManager{
 
 		public function initializeUserClasses(){
-			$this->addUserClass("EmployeeSalary");
+			if(defined('MODULE_TYPE') && MODULE_TYPE != 'admin'){
+				$this->addUserClass("EmployeeSalary");
+			}
 		}
 
 		public function initializeFieldMappings(){

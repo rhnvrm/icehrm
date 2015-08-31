@@ -1,4 +1,4 @@
-INSERT INTO `CurrencyTypes`(`id`, `code`, `name`) VALUES 
+INSERT INTO `CurrencyTypes`(`id`, `code`, `name`) VALUES
 	(3, 'AED', 'Utd. Arab Emir. Dirham'),
     (4, 'AFN', 'Afghanistan Afghani'),
     (5, 'ALL', 'Albanian Lek'),
@@ -158,9 +158,9 @@ INSERT INTO `CurrencyTypes`(`id`, `code`, `name`) VALUES
     (169, 'ZRN', 'New Zaire'),
     (170, 'ZWD', 'Zimbabwe Dollar'),
     (173, 'SAR', 'Saudi Arabia Riyal');
-	
-	
-INSERT INTO `Country`(`code`, `namecap`, `name`, `iso3`, `numcode`) VALUES 
+
+
+INSERT INTO `Country`(`code`, `namecap`, `name`, `iso3`, `numcode`) VALUES
 	('AF', 'AFGHANISTAN', 'Afghanistan', 'AFG', 4),
     ('AL', 'ALBANIA', 'Albania', 'ALB', 8),
     ('DZ', 'ALGERIA', 'Algeria', 'DZA', 12),
@@ -400,8 +400,8 @@ INSERT INTO `Country`(`code`, `namecap`, `name`, `iso3`, `numcode`) VALUES
     ('YE', 'YEMEN', 'Yemen', 'YEM', 887),
     ('ZM', 'ZAMBIA', 'Zambia', 'ZMB', 894),
     ('ZW', 'ZIMBABWE', 'Zimbabwe', 'ZWE', 716);
-	
-INSERT INTO `Province`(`id`, `name`, `code`, `country`) VALUES 
+
+INSERT INTO `Province`(`id`, `name`, `code`, `country`) VALUES
 	(1, 'Alaska', 'AK', 'US'),
     (2, 'Alabama', 'AL', 'US'),
     (3, 'American Samoa', 'AS', 'US'),
@@ -467,9 +467,9 @@ INSERT INTO `Province`(`id`, `name`, `code`, `country`) VALUES
     (63, 'Armed Forces Europe', 'AE', 'US'),
     (64, 'Armed Forces Middle East', 'AE', 'US'),
     (65, 'Armed Forces Pacific', 'AP', 'US');
-	
-	
-	
+
+
+
 INSERT INTO `Nationality` (`id`, `name`) VALUES
 (1, 'Afghan'),
 (2, 'Albanian'),
@@ -683,21 +683,21 @@ INSERT INTO `Reports` (`id`, `name`, `details`, `parameters`, `query`, `paramOrd
 (5, 'Employee Time Tracking Report', 'This report list employee working hours and attendance details for each day for a given period ', '[\r\n[ "employee", {"label":"Employee","type":"select2","allow-null":false,"remote-source":["Employee","id","first_name+last_name"]}],\r\n[ "date_start", {"label":"Start Date","type":"date"}],\r\n[ "date_end", {"label":"End Date","type":"date"}]\r\n]', 'EmployeeTimeTrackReport', '["employee","date_start","date_end"]', 'Class');
 
 INSERT INTO `Reports` (`name`, `details`, `parameters`, `query`, `paramOrder`, `type`) VALUES
-('Active Employee Report', 'This report list employees who are currently active based on joined date and termination date ', 
+('Active Employee Report', 'This report list employees who are currently active based on joined date and termination date ',
 '[\r\n[ "department", {"label":"Department","type":"select2","remote-source":["CompanyStructure","id","title"],"allow-null":true}]\r\n]',
- 'ActiveEmployeeReport', 
+ 'ActiveEmployeeReport',
  '["department"]', 'Class');
- 
+
  INSERT INTO `Reports` (`name`, `details`, `parameters`, `query`, `paramOrder`, `type`) VALUES
-('New Hires Employee Report', 'This report list employees who are joined between given two dates ', 
+('New Hires Employee Report', 'This report list employees who are joined between given two dates ',
 '[[ "department", {"label":"Department","type":"select2","remote-source":["CompanyStructure","id","title"],"allow-null":true}],\r\n[ "date_start", {"label":"Start Date","type":"date"}],\r\n[ "date_end", {"label":"End Date","type":"date"}]\r\n]',
- 'NewHiresEmployeeReport', 
+ 'NewHiresEmployeeReport',
  '["department","date_start","date_end"]', 'Class');
- 
+
 INSERT INTO `Reports` (`name`, `details`, `parameters`, `query`, `paramOrder`, `type`) VALUES
-('Terminated Employee Report', 'This report list employees who are terminated between given two dates ', 
+('Terminated Employee Report', 'This report list employees who are terminated between given two dates ',
 '[[ "department", {"label":"Department","type":"select2","remote-source":["CompanyStructure","id","title"],"allow-null":true}],\r\n[ "date_start", {"label":"Start Date","type":"date"}],\r\n[ "date_end", {"label":"End Date","type":"date"}]\r\n]',
- 'TerminatedEmployeeReport', 
+ 'TerminatedEmployeeReport',
  '["department","date_start","date_end"]', 'Class');
 
 
@@ -719,13 +719,9 @@ INSERT INTO `Settings` (`name`, `value`, `description`, `meta`) VALUES
 ('System: Debug Mode', '0', '','["value", {"label":"Value","type":"select","source":[["1","Yes"],["0","No"]]}]'),
 ('Projects: Make All Projects Available to Employees', '1', '','["value", {"label":"Value","type":"select","source":[["1","Yes"],["0","No"]]}]'),
 ('Leave: Share Calendar to Whole Company', '1', '','["value", {"label":"Value","type":"select","source":[["1","Yes"],["0","No"]]}]'),
-('Files: Upload Files to S3', '0', '','["value", {"label":"Value","type":"select","source":[["1","Yes"],["0","No"]]}]'),
-('Files: Amazon S3 Key for File Upload', '', 'Please provide S3 Key for uploading files',''),
-('Files: Amazone S3 Secret for File Upload', '',  'Please provide S3 Secret for uploading files',''),
-('Files: S3 Bucket', '',  'Please provide S3 Bucket name for uploading files',''),
-('Files: S3 Web Url', '',  'Please provide Url to the s3 bucket',''),
+('Leave: CC Emails', '',  'Every email sent though leave module will be CC to these comma seperated list of emails addresses',''),
+('Leave: BCC Emails', '',  'Every email sent though leave module will be BCC to these comma seperated list of emails addresses',''),
 ('Attendance: Time-sheet Cross Check', '0',  'Only allow users to add an entry to a timesheet only if they have marked atteandance for the selected period','["value", {"label":"Value","type":"select","source":[["1","Yes"],["0","No"]]}]'),
-('Instance: Key', '',  'This can be generated from http://icehrm.com/generateInstanceKey.php',''),
 ('Api: REST Api Enabled', '0',  '','["value", {"label":"Value","type":"select","source":[["0","No"],["1","Yes"]]}]');
 
 
@@ -854,9 +850,74 @@ INSERT INTO `EmploymentStatus` (`id`, `name`, `description`) VALUES
 (5, 'Part Time Internship', 'Part Time Internship'),
 (6, 'Part Time Permanent', 'Part Time Permanent');
 
+INSERT INTO `FieldNameMappings` (`type`, `name`, `textOrig`, `textMapped`, `display`) VALUES
+  ('Employee', 'employee_id', 'Employee Number', 'Employee Number', 'Table and Form'),
+  ('Employee', 'first_name', 'First Name', 'First Name', 'Table and Form'),
+  ('Employee', 'middle_name', 'Middle Name', 'Middle Name', 'Form'),
+  ('Employee', 'last_name', 'Last Name', 'Last Name', 'Table and Form'),
+  ('Employee', 'nationality', 'Nationality', 'Nationality', 'Form'),
+  ('Employee', 'ethnicity', 'Ethnicity', 'Ethnicity', 'Form'),
+  ('Employee', 'immigration_status', 'Immigration Status', 'Immigration Status', 'Form'),
+  ('Employee', 'birthday', 'Date of Birth', 'Date of Birth', 'Form'),
+  ('Employee', 'gender', 'Gender', 'Gender', 'Form'),
+  ('Employee', 'marital_status', 'Marital Status', 'Marital Status', 'Form'),
+  ('Employee', 'ssn_num', 'SSN/NRIC', 'SSN/NRIC', 'Form'),
+  ('Employee', 'nic_num', 'NIC', 'NIC', 'Form'),
+  ('Employee', 'other_id', 'Other ID', 'Other ID', 'Form'),
+  ('Employee', 'driving_license', 'Driving License No', 'Driving License No', 'Form'),
+  ('Employee', 'employment_status', 'Employment Status', 'Employment Status', 'Form'),
+  ('Employee', 'job_title', 'Job Title', 'Job Title', 'Form'),
+  ('Employee', 'pay_grade', 'Pay Grade', 'Pay Grade', 'Form'),
+  ('Employee', 'work_station_id', 'Work Station Id', 'Work Station Id', 'Form'),
+  ('Employee', 'address1', 'Address Line 1', 'Address Line 1', 'Form'),
+  ('Employee', 'address2', 'Address Line 2', 'Address Line 2', 'Form'),
+  ('Employee', 'city', 'City', 'City', 'Form'),
+  ('Employee', 'country', 'Country', 'Country', 'Form'),
+  ('Employee', 'province', 'Province', 'Province', 'Form'),
+  ('Employee', 'postal_code', 'Postal/Zip Code', 'Postal/Zip Code', 'Form'),
+  ('Employee', 'home_phone', 'Home Phone', 'Home Phone', 'Form'),
+  ('Employee', 'mobile_phone', 'Mobile Phone', 'Mobile Phone', 'Table and Form'),
+  ('Employee', 'work_phone', 'Work Phone', 'Work Phone', 'Form'),
+  ('Employee', 'work_email', 'Work Email', 'Work Email', 'Form'),
+  ('Employee', 'private_email', 'Private Email', 'Private Email', 'Form'),
+  ('Employee', 'joined_date', 'Joined Date', 'Joined Date', 'Form'),
+  ('Employee', 'confirmation_date', 'Confirmation Date', 'Confirmation Date', 'Form'),
+  ('Employee', 'termination_date', 'Termination Date', 'Termination Date', 'Form'),
+  ('Employee', 'supervisor', 'Supervisor', 'Supervisor', 'Table and Form'),
+  ('Employee', 'department', 'Department', 'Department', 'Table and Form'),
+  ('Employee', 'notes', 'Notes', 'Notes', 'Form');
+
+
+INSERT INTO `CustomFields` (`type`, `name`, `data`,`display`) VALUES
+  ('Employee', 'custom1', '', 'Hidden'),
+  ('Employee', 'custom2', '', 'Hidden'),
+  ('Employee', 'custom3', '', 'Hidden'),
+  ('Employee', 'custom4', '', 'Hidden'),
+  ('Employee', 'custom5', '', 'Hidden'),
+  ('Employee', 'custom6', '', 'Hidden'),
+  ('Employee', 'custom7', '', 'Hidden'),
+  ('Employee', 'custom8', '', 'Hidden'),
+  ('Employee', 'custom9', '', 'Hidden'),
+  ('Employee', 'custom10', '', 'Hidden');
+
 
 INSERT INTO `Employees` (`id`, `employee_id`, `first_name`, `middle_name`, `last_name`, `nationality`, `birthday`, `gender`, `marital_status`, `ssn_num`, `nic_num`, `other_id`, `driving_license`, `driving_license_exp_date`, `employment_status`, `job_title`, `pay_grade`, `work_station_id`, `address1`, `address2`, `city`, `country`, `province`, `postal_code`, `home_phone`, `mobile_phone`, `work_phone`, `work_email`, `private_email`, `joined_date`, `confirmation_date`, `supervisor`, `department`, `custom1`, `custom2`, `custom3`, `custom4`, `custom5`, `custom6`, `custom7`, `custom8`, `custom9`, `custom10`) VALUES
 (1, 'EMP001', 'IceHrm', 'Sample', 'Employee', 35, '1984-03-17 18:30:00', 'Male', 'Married', '', '294-38-3535', '294-38-3535', '', NULL, 3, 11, 2, '', '2772 Flynn Street', 'Willoughby', 'Willoughby', 'US', 41, '44094', '440-953-4578', '440-953-4578', '440-953-4578', 'icehrm+admin@web-stalk.com', 'icehrm+admin@web-stalk.com', '2005-08-03 18:00:00', '0000-00-00 00:00:00', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
-INSERT INTO `Users` VALUES 
-(1,'admin','icehrm+admin@web-stalk.com','21232f297a57a5a743894a0e4a801fc3',1,'Admin',NULL,NULL,NULL);
+INSERT INTO `UserRoles` VALUES
+  (1,'Report Manager'),
+  (2,'Attendance Manager');
+
+
+INSERT INTO `Users` VALUES
+(1,'admin','icehrm+admin@web-stalk.com','21232f297a57a5a743894a0e4a801fc3',1,NULL,'Admin','',NULL,NULL,NULL);
+
+
+INSERT INTO `SalaryComponentType` (`id`,`code`, `name`) VALUES
+  (1,'B001', 'Basic'),
+  (2,'B002', 'Allowance');
+
+
+INSERT INTO `SalaryComponent` VALUES
+(1,'Basic Salary', 1,''),(2,'Fixed Allowance', 1,''),(3,'Car Allowance', 2,''),(4,'Telephone Allowance', 2,'');
+

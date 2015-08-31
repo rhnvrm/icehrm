@@ -7,6 +7,7 @@ if (!class_exists('LeavesModulesManager')) {
 			if(defined('MODULE_TYPE') && MODULE_TYPE != 'admin'){
 				$this->addUserClass("EmployeeLeave");
 			}
+			
 		}
 
 		public function initializeFieldMappings(){
@@ -19,6 +20,7 @@ if (!class_exists('LeavesModulesManager')) {
 		}
 
 		public function setupModuleClassDefinitions(){
+			
 			$this->addModelClass('EmployeeLeave');
 			$this->addModelClass('EmployeeLeaveDay');
 			$this->addModelClass('EmployeeLeaveLog');

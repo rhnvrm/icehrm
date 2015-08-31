@@ -4,8 +4,8 @@ require dirname(__FILE__).'/composer/vendor/autoload.php';
 
 
 if(!defined('TAGS_TO_PRESERVE')){define('TAGS_TO_PRESERVE','');}
-$jsVersion = '41.8';
-$cssVersion = '2.8';
+$jsVersion = defined('CACHE_VALUE')?CACHE_VALUE:"v".VERSION;
+$cssVersion = defined('CACHE_VALUE')?CACHE_VALUE:"v".VERSION;
 
 
 include (APP_BASE_PATH."utils/SessionUtils.php");

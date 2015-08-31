@@ -132,7 +132,7 @@ class ModuleTabGroup{
             $moduleTab->isActive = false;
         }
         $moduleTab->isInsideGroup = true;
-        $modules[] = $moduleTab;
+        $this->modules[] = $moduleTab;
     }
 
     public function getHTML(){

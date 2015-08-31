@@ -59,6 +59,8 @@ AdapterBase.method('initAdapter' , function(endPoint,tab,filter,orderBy) {
 	}
 	
 	this.trackEvent("initAdapter",tab);
+
+    this.requestCache = new RequestCache();
 	
 });
 
@@ -319,15 +321,39 @@ AdapterBase.method('getFieldValues', function(fieldMaster,callBackData) {
 	if(fieldMaster[4] != undefined && fieldMaster[4] != null){
 		methodParams = JSON.stringify(fieldMaster[4]); 
 	}
-	$.post(this.moduleRelativeURL, {'t':fieldMaster[0],'key':fieldMaster[1],'value':fieldMaster[2],'method':method,'methodParams':methodParams,'a':'getFieldValues'}, function(data) {
-		if(data.status == "SUCCESS"){
-			callBackData['callBackData'].push(data.data);
-			if(callBackData['callBackSuccess'] != null && callBackData['callBackSuccess'] != undefined){
-				callBackData['callBackData'].push(callBackData['callBackSuccess']);
-			}
-			that.callFunction(callBackData['callBack'],callBackData['callBackData']);
-		}
-	},"json");
+
+    var key = this.requestCache.getKey(this.moduleRelativeURL,{'t':fieldMaster[0],'key':fieldMaster[1],'value':fieldMaster[2],'method':method,'methodParams':methodParams,'a':'getFieldValues'});
+    var cacheData = this.requestCache.getData(key);
+
+    if(cacheData != null){
+
+        if(cacheData.status == "SUCCESS"){
+            callBackData['callBackData'].push(cacheData.data);
+            if(callBackData['callBackSuccess'] != null && callBackData['callBackSuccess'] != undefined){
+                callBackData['callBackData'].push(callBackData['callBackSuccess']);
+            }
+            that.callFunction(callBackData['callBack'],callBackData['callBackData']);
+        }
+
+    }
+
+    var callbackWraper = function(data) {
+        if(data.status == "SUCCESS"){
+            that.requestCache.setData(this.success.key, data);
+            callBackData['callBackData'].push(data.data);
+            if(callBackData['callBackSuccess'] != null && callBackData['callBackSuccess'] != undefined){
+                callBackData['callBackData'].push(callBackData['callBackSuccess']);
+            }
+            that.callFunction(callBackData['callBack'],callBackData['callBackData']);
+        }
+    };
+
+    callbackWraper.key = key;
+
+    $.post(this.moduleRelativeURL, {'t':fieldMaster[0],'key':fieldMaster[1],'value':fieldMaster[2],'method':method,'methodParams':methodParams,'a':'getFieldValues'}, callbackWraper,"json");
+
+
+
 });
 
 AdapterBase.method('setAdminProfile', function(empId) {
@@ -484,4 +510,47 @@ IdNameAdapter.method('getFormFields', function() {
         [ "id", {"label":"ID","type":"hidden"}],
         [ "name", {"label":"Name","type":"text","validation":""}]
     ];
+});
+
+
+
+/**
+ * RequestCache
+ */
+
+function RequestCache() {
+
+}
+
+RequestCache.method('getKey', function(url,params) {
+    var key = url+"|";
+    for(index in params){
+        key += index+"="+params[index]+"|";
+    }
+    return key;
+});
+
+RequestCache.method('getData', function(key) {
+    var data;
+    if (typeof(Storage) == "undefined") {
+        return null;
+    }
+
+    var strData = localStorage.getItem(key);
+    if(strData != undefined && strData != null && strData != ""){
+        return JSON.parse(strData);
+    }
+
+    return null;
+});
+
+RequestCache.method('setData', function(key, data) {
+
+    if (typeof(Storage) == "undefined") {
+        return null;
+    }
+
+    var strData = JSON.stringify(data);
+    var strData = localStorage.setItem(key,strData);
+    return strData;
 });

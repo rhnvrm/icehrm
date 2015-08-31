@@ -44,6 +44,7 @@ class BaseService{
 	var $fileFields = null;
 	var $moduleManagers = null;
 	var $emailSender = null;
+    var $user = null;
 	
 	private static $me = null;
 	
@@ -141,7 +142,7 @@ class BaseService{
 					continue;
 				}
 				$v = $vArr;
-				$length = count();
+				$length = count($v);
 				for($i=0; $i<$length; $i++){
 					$query.=$k." like ?";
 					
@@ -160,6 +161,9 @@ class BaseService{
 			}else{
 				if(!empty($v) && $v != 'NULL'){
 					$query.=" and ".$k."=?";
+                    if($v == '__myid__'){
+                        $v = $this->getCurrentProfileId();
+                    }
 					$queryData[] = $v;
 				}
 					
@@ -169,6 +173,20 @@ class BaseService{
 
 		return array($query, $queryData);
 	}
+
+
+    public function getSortingData($req){
+        $data = array();
+        $data['sorting'] = $req['sorting'];
+
+        $columns = json_decode($req['cl'],true);
+
+        $data['column'] = $columns[$req['iSortCol_0']];
+
+        $data['order'] = $req['sSortDir_0'];
+
+        return $data;
+    }
 	
 	/**
 	 * An extention of get method for the use of data tables with ability to search
@@ -184,7 +202,7 @@ class BaseService{
 	 * @param string $skipProfileRestriction {Boolean} default if false - TODO - I'll explain this later
 	 * @return {Array} an array of objects of type $table
 	 */
-	public function getData($table,$mappingStr = null, $filterStr = null, $orderBy = null, $limit = null, $searchColumns = null, $searchTerm = null, $isSubOrdinates = false, $skipProfileRestriction = false){
+	public function getData($table,$mappingStr = null, $filterStr = null, $orderBy = null, $limit = null, $searchColumns = null, $searchTerm = null, $isSubOrdinates = false, $skipProfileRestriction = false, $sortData = array()){
 		if(!empty($mappingStr)){
 		$map = json_decode($mappingStr);
 		}
@@ -218,23 +236,36 @@ class BaseService{
 		
 		if(!empty($searchTerm) && !empty($searchColumns)){
 			$searchColumnList = json_decode($searchColumns);
-			$tempQuery = " and (";
-			foreach($searchColumnList as $col){
-				
-				if($tempQuery != " and ("){
-					$tempQuery.=" or ";	
-				}
-				$tempQuery.=$col." like ?";
-				$queryData[] = "%".$searchTerm."%";
-			}	
-			$query.= $tempQuery.")";	
+            $searchColumnList = array_diff($searchColumnList, $obj->getVirtualFields());
+            if(!empty($searchColumnList)){
+                $tempQuery = " and (";
+                foreach($searchColumnList as $col){
+
+                    if($tempQuery != " and ("){
+                        $tempQuery.=" or ";
+                    }
+                    $tempQuery.=$col." like ?";
+                    $queryData[] = "%".$searchTerm."%";
+                }
+                $query.= $tempQuery.")";
+            }
+
 		}
-		
-		if(empty($orderBy)){
-			$orderBy = "";
-		}else{
-			$orderBy = " ORDER BY ".$orderBy;
-		}
+
+        if(!empty($sortData) && $sortData['sorting']."" == "1" && isset($sortData['column'])){
+
+            $orderBy = " ORDER BY ".$sortData['column']." ".$sortData['order'];
+
+        }else{
+            if(empty($orderBy)){
+                $orderBy = "";
+            }else{
+                $orderBy = " ORDER BY ".$orderBy;
+            }
+        }
+
+
+
 		
 		if(empty($limit)){
 			$limit = "";	
@@ -248,8 +279,11 @@ class BaseService{
 			if(!empty($cemp)){
 				if(!$isSubOrdinates){
 					array_unshift($queryData, $cemp);
-					$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
-					$list = $obj->Find($signInMappingField." = ?".$query.$orderBy.$limit, $queryData);
+					//$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
+                    $signInMappingField = $obj->getUserOnlyMeAccessField();
+                    LogManager::getInstance()->debug("Data Load Query (x1):"."1=1".$signInMappingField." = ?".$query.$orderBy.$limit);
+                    LogManager::getInstance()->debug("Data Load Query Data (x1):".json_encode($queryData));
+                    $list = $obj->Find($signInMappingField." = ?".$query.$orderBy.$limit, $queryData);
 				}else{
 					$profileClass = ucfirst(SIGN_IN_ELEMENT_MAPPING_FIELD_NAME);
 					$subordinate = new $profileClass();
@@ -262,7 +296,10 @@ class BaseService{
 						$subordinatesIds.=$sub->id;
 					}
 					$subordinatesIds.="";
-					$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
+					//$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
+                    $signInMappingField = $obj->getUserOnlyMeAccessField();
+                    LogManager::getInstance()->debug("Data Load Query (x2):"."1=1".$signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit);
+                    LogManager::getInstance()->debug("Data Load Query Data (x2):".json_encode($queryData));
 					$list = $obj->Find($signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit, $queryData);
 				}
 					
@@ -270,10 +307,34 @@ class BaseService{
 				$list = array();
 			}
 					
+		}else if($isSubOrdinates){
+            $cemp = $this->getCurrentProfileId();
+            if(!empty($cemp)){
+                $profileClass = ucfirst(SIGN_IN_ELEMENT_MAPPING_FIELD_NAME);
+                $subordinate = new $profileClass();
+                $subordinates = $subordinate->Find("supervisor = ?",array($cemp));
+                $subordinatesIds = "";
+                foreach($subordinates as $sub){
+                    if($subordinatesIds != ""){
+                        $subordinatesIds.=",";
+                    }
+                    $subordinatesIds.=$sub->id;
+                }
+                $subordinatesIds.="";
+                //$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
+                $signInMappingField = $subordinate->getUserOnlyMeAccessField();
+                LogManager::getInstance()->debug("Data Load Query (a1):".$signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit);
+                $list = $obj->Find($signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit, $queryData);
+            }else{
+                $list = $obj->Find("1=1".$query.$orderBy.$limit,$queryData);
+            }
 		}else{
 			$list = $obj->Find("1=1".$query.$orderBy.$limit,$queryData);
 		}	
 
+        if(!$list){
+            LogManager::getInstance()->debug("Get Data Error:".$obj->ErrorMsg());
+        }
 		
 		LogManager::getInstance()->debug("Data Load Query:"."1=1".$query.$orderBy.$limit);
 		LogManager::getInstance()->debug("Data Load Query Data:".json_encode($queryData));
@@ -668,6 +729,9 @@ class BaseService{
 	 */
 	
 	public function getCurrentUser(){
+        if(!empty($this->currentUser)){
+            return $this->currentUser;
+        }
 		$user = SessionUtils::getSessionObject('user');
 		return $user;
 	}
@@ -833,12 +897,21 @@ class BaseService{
 	 */
 	
 	public function checkSecureAccess($type,$object){
+
+        if(!empty($this->currentUser->user_roles)){
+            return true;
+        }
 		
 		$accessMatrix = array();
 		
 		//Construct permission method
 		$permMethod = "get".$this->currentUser->user_level."Access";
-		$accessMatrix = $object->$permMethod();
+        if(method_exists($object,$permMethod)){
+            $accessMatrix = $object->$permMethod();
+        }else{
+            $accessMatrix = $object->getDefaultAccessLevel();
+        }
+
 		if (in_array($type, $accessMatrix)) {
 			//The user has required permission, so return true
 			return true;
@@ -932,6 +1005,7 @@ class BaseService{
 		$module->Load("update_path = ?",array($group.">".$name));
 		$arr = array();
 		$arr['user'] = json_decode($module->user_levels,true);
+		$arr['user_roles'] = !empty($module->user_roles)?json_decode($module->user_roles,true):array();
 
 		
 		$permission = new Permission();

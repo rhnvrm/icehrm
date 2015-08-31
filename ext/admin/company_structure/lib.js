@@ -25,7 +25,7 @@ CompanyStructureAdapter.method('getHeaders', function() {
 	return [
 			{ "sTitle": "ID","bVisible":false },
 			{ "sTitle": "Name" },
-			{ "sTitle": "Address"},
+			{ "sTitle": "Address","bSortable":false},
 			{ "sTitle": "Type"},
 			{ "sTitle": "Country", "sClass": "center" },
 			{ "sTitle": "Parent Structure"}
@@ -57,35 +57,6 @@ function CompanyGraphAdapter(endPoint) {
 
 CompanyGraphAdapter.inherits(CompanyStructureAdapter);
 
-/*
-CompanyGraphAdapter.method('createTable', function(elementId) {
-	
-	var sourceData = this.sourceData;
-	
-	if(modJs['r'] == undefined || modJs['r'] == null){
-		modJs['r'] = Raphael("CompanyGraph", 800, 2000);
-		modJs['r'].setViewBox(0,0,800,2000,false);
-	}else{
-		return;
-	}
-	
-	var r = modJs['r'];
-	
-	for(var i=0; i< sourceData.length; i++){
-		sourceData[i].parent = sourceData[i]._original[6];
-	}
-	
-	if(this.fixCyclicParent(sourceData)){
-		var hierarchy = new HierarchyJs();
-		var nodes = hierarchy.createNodes(sourceData);
-		hierarchy.createHierarchy(nodes, r);
-	}
-	
-	
-	
-	
-});
-*/
 
 CompanyGraphAdapter.method('convertToTree', function(data) {
 	var ice = {};
@@ -188,7 +159,7 @@ CompanyGraphAdapter.method('update', function(source, tree, root) {
 	  // Normalize for fixed-depth.
 	  nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-	  // Update the nodes…
+	  // Update the nodesï¿½
 	  var node = that.vis.selectAll("g.node")
 	      .data(nodes, function(d) { return d.id || (d.id = ++that.nodeIdCounter); });
 
@@ -233,7 +204,7 @@ CompanyGraphAdapter.method('update', function(source, tree, root) {
 	  nodeExit.select("text")
 	      .style("fill-opacity", 1e-6);
 
-	  // Update the links…
+	  // Update the linksï¿½
 	  var link = that.vis.selectAll("path.link")
 	      .data(tree.links(nodes), function(d) { return d.target.id; });
 

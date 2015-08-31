@@ -53,6 +53,7 @@ $(document).ready(function() {
 	
 	$('#leaveCalendarBlock').fullCalendar({
 		height:400,
+		firstDay:1,
 		editable: false,
 		
 		events: modJs.getLeaveJsonUrl(),

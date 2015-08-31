@@ -37,7 +37,7 @@ class LeavesEmailSender{
 		return $sup;	
 	}
 	
-	public function sendLeaveApplicationEmail($employee){
+	public function sendLeaveApplicationEmail($employee, $cancellation = false){
 		
 		$sup = $this->getEmployeeSupervisor($employee);
 		if(empty($sup)){
@@ -49,7 +49,12 @@ class LeavesEmailSender{
 		$params['name'] = $employee->first_name." ".$employee->last_name; 
 		$params['url'] = CLIENT_BASE_URL; 
 		
-		$email = $this->subActionManager->getEmailTemplate('leaveApplied.html');
+		if($cancellation){
+			$email = $this->subActionManager->getEmailTemplate('leaveCancelled.html');
+		}else{
+			$email = $this->subActionManager->getEmailTemplate('leaveApplied.html');
+		}
+		
 		
 		$user = $this->subActionManager->getUserFromProfileId($sup->id);
 		
@@ -60,7 +65,37 @@ class LeavesEmailSender{
 		
 		if(!empty($emailTo)){
 			if(!empty($this->emailSender)){
-				$this->emailSender->sendEmail("Leave Application Received",$emailTo,$email,$params);
+				
+				$ccList = array();
+				$ccListStr = SettingsManager::getInstance()->getSetting("Leave: CC Emails");
+				if(!empty($ccListStr)){
+					$arr = explode(",", $ccListStr);
+					$count = count($arr)<=4?count($arr):4;
+					for($i=0;$i<$count;$i++){
+						if(filter_var( $arr[$i], FILTER_VALIDATE_EMAIL)) {
+							$ccList[] = $arr[$i];
+						}
+						
+					}
+				}
+				
+				$bccList = array();
+				$bccListStr = SettingsManager::getInstance()->getSetting("Leave: BCC Emails");
+				if(!empty($bccListStr)){
+					$arr = explode(",", $bccListStr);
+					$count = count($arr)<=4?count($arr):4;
+					for($i=0;$i<$count;$i++){
+						if(filter_var( $arr[$i], FILTER_VALIDATE_EMAIL)) {
+							$bccList[] = $arr[$i];
+						}
+					}
+				}
+				if($cancellation){
+					$this->emailSender->sendEmail("Leave Cancellation Request Received",$emailTo,$email,$params,$ccList,$bccList);
+				}else{
+					$this->emailSender->sendEmail("Leave Application Received",$emailTo,$email,$params,$ccList,$bccList);
+				}
+				
 			}
 		}else{
 			LogManager::getInstance()->info("[sendLeaveApplicationEmail] email is empty");

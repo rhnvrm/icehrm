@@ -28,6 +28,20 @@ class LeavesActionManager extends SubActionManager{
 	const NOTWORKINGDAY = 2;
 	
 	public function addLeave($req){
+		
+		$leaveTypeTemp = new LeaveType();
+		$allowedLeaveTypes = $leaveTypeTemp->getUserLeaveTypes();
+		$allowed = false;
+		foreach($allowedLeaveTypes as $leaveTypeTemp){
+			if($leaveTypeTemp->id == $req->leave_type){
+				$allowed = true;
+			}	
+		}
+		
+		if(!$allowed){
+			return new IceResponse(IceResponse::ERROR,"You are not allowed to apply for this type of leaves");
+		}
+		
 		$employee = $this->baseService->getElement('Employee',$this->getCurrentProfileId(),null,true);
 		$rule = $this->getLeaveRule($employee, $req->leave_type);
 		
@@ -111,13 +125,69 @@ class LeavesActionManager extends SubActionManager{
 		return new IceResponse(IceResponse::SUCCESS,$employeeLeave);
 	}
 	
+	
+	public function cancelLeave($req){
+		
+		$employee = $this->baseService->getElement('Employee',$this->getCurrentProfileId(),null,true);
+		
+		$employeeLeave = new EmployeeLeave();
+		$employeeLeave->Load("id = ?",array($req->id));
+		if($employeeLeave->id != $req->id){
+			return new IceResponse(IceResponse::ERROR,"Leave not found");
+		}
+		
+		if($this->user->user_level != 'Admin' && $this->getCurrentProfileId() != $employeeLeave->employee){
+			return new IceResponse(IceResponse::ERROR,"Only an admin or owner of the leave can do this");
+		}
+		
+		if($employeeLeave->status != 'Approved'){
+			return new IceResponse(IceResponse::ERROR,"Only an approved leave can be cancelled");
+		}
+		
+		$employeeLeave->status = 'Cancellation Requested';
+		$ok = $employeeLeave->Save();
+		if(!$ok){
+			LogManager::getInstance()->error("Error occured while cancelling the leave:".$employeeLeave->ErrorMsg());
+			return new IceResponse(IceResponse::ERROR,"Error occured while cancelling the leave. Please contact admin.");
+		}
+		
+		$employeeLeaveLog = new EmployeeLeaveLog();
+		$employeeLeaveLog->employee_leave = $employeeLeave->id;
+		$employeeLeaveLog->user_id = $this->baseService->getCurrentUser()->id;
+		$employeeLeaveLog->status_from = 'Approved';
+		$employeeLeaveLog->status_to = $employeeLeave->status;
+		$employeeLeaveLog->created = date("Y-m-d H:i:s");
+		$employeeLeaveLog->data = "Leave cancellation request sent";
+		$ok = $employeeLeaveLog->Save();
+		if(!$ok){
+			LogManager::getInstance()->info($employeeLeaveLog->ErrorMsg());
+		}
+		
+		if(!empty($this->emailSender)){
+			$leavesEmailSender = new LeavesEmailSender($this->emailSender, $this);
+			$leavesEmailSender->sendLeaveApplicationEmail($employee, true);
+		}
+		
+		$this->baseService->audit(IceConstants::AUDIT_ACTION, "Leave cancellation \ start:".$employeeLeave->date_start."\ end:".$employeeLeave->date_end);
+		$notificationMsg = $employee->first_name." ".$employee->last_name." cancelled a leave. Visit leave module to approve";
+		
+		$this->baseService->notificationManager->addNotification($employee->supervisor,$notificationMsg,'{"type":"url","url":"g=modules&n=leaves&m=module_Leaves#tabSubEmployeeLeaveCancel"}',IceConstants::NOTIFICATION_LEAVE);
+		return new IceResponse(IceResponse::SUCCESS,$employeeLeave);
+	}
+	
 	public function getEntitlement($req){
 		$employee = $this->baseService->getElement('Employee',$this->getCurrentProfileId(),null,true);
 		
 		$leaveEntitlementArray = array();
 		
+		$leaveGroupId = $this->getEmployeeLeaveGroup($employee->id);
+		
 		$leaveType = new LeaveType();
-		$leaveTypes = $leaveType->Find("1=1");
+		if(empty($leaveGroupId)){
+			$leaveTypes = $leaveType->Find("leave_group IS NULL",array());
+		}else{
+			$leaveTypes = $leaveType->Find("leave_group IS NULL or leave_group = ?",array($leaveGroupId));
+		}
 		
 		//Find Current leave period
 		
@@ -139,8 +209,9 @@ class LeavesActionManager extends SubActionManager{
 			$leaves['pendingLeaves'] = floatval($leaveMatrix[1]);
 			$leaves['approvedLeaves'] = floatval($leaveMatrix[2]);
 			$leaves['rejectedLeaves'] = floatval($leaveMatrix[3]);
-			$leaves['availableLeaves'] = round(floatval($leaveMatrix[0]) - $leaves['pendingLeaves'] -  $leaves['approvedLeaves']);
-			$leaves['tobeAccrued'] = round(floatval($leaveMatrix[4]['total']) - floatval($leaveMatrix[4]['accrued']));
+			$leaves['cancelRequestedLeaves'] = floatval($leaveMatrix[5]);
+			$leaves['availableLeaves'] = round(floatval($leaveMatrix[0]) - $leaves['pendingLeaves'] -  $leaves['approvedLeaves'] - $leaves['cancelRequestedLeaves'],3);
+			$leaves['tobeAccrued'] = round(floatval($leaveMatrix[4]['total']) - floatval($leaveMatrix[4]['accrued']),3);
 			$leaves['carriedForward'] = floatval($leaveMatrix[4]['carriedForward']);
 			
 			$leaveEntitlementArray[] = $leaves;
@@ -181,7 +252,8 @@ class LeavesActionManager extends SubActionManager{
 		$leaves['pendingLeaves'] = floatval($leaveMatrix[1]);
 		$leaves['approvedLeaves'] = floatval($leaveMatrix[2]);
 		$leaves['rejectedLeaves'] = floatval($leaveMatrix[3]);
-		$leaves['availableLeaves'] = $leaves['totalLeaves'] - $leaves['pendingLeaves'] -  $leaves['approvedLeaves'];
+		$leaves['cancelRequestedLeaves'] = floatval($leaveMatrix[5]);
+		$leaves['availableLeaves'] = $leaves['totalLeaves'] - $leaves['pendingLeaves'] -  $leaves['approvedLeaves'] - $leaves['cancelRequestedLeaves'];
 
 		//=== Resolve Employee Country
 		$employeeCountry = NULL;
@@ -231,7 +303,8 @@ class LeavesActionManager extends SubActionManager{
 		$leaves['pendingLeaves'] = floatval($leaveMatrix[1]);
 		$leaves['approvedLeaves'] = floatval($leaveMatrix[2]);
 		$leaves['rejectedLeaves'] = floatval($leaveMatrix[3]);
-		$leaves['availableLeaves'] = $leaves['totalLeaves'] - $leaves['pendingLeaves'] -  $leaves['approvedLeaves'];
+		$leaves['cancelRequestedLeaves'] = floatval($leaveMatrix[5]);
+		$leaves['availableLeaves'] = $leaves['totalLeaves'] - $leaves['pendingLeaves'] -  $leaves['approvedLeaves'] - $leaves['cancelRequestedLeaves'];
 		$leaves['attachment'] = $employeeLeave->attachment;
 
 		$employeeLeaveDay = new EmployeeLeaveDay();
@@ -385,7 +458,7 @@ class LeavesActionManager extends SubActionManager{
 	private function getAvailableLeaveMatrixForEmployeeLeaveType($employee,$currentLeavePeriod,$leaveTypeId){
 
 		/**
-		 * [Total Available],[Pending],[Approved],[Rejected]
+		 * [Total Available],[Pending],[Approved],[Rejected],[Available],[Cancellation Requested],[Cancelled]
 		 */
 
 		$rule = $this->getLeaveRule($employee, $leaveTypeId);
@@ -395,8 +468,11 @@ class LeavesActionManager extends SubActionManager{
 		$pending = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $currentLeavePeriod->id, $leaveTypeId, 'Pending'));
 		$approved = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $currentLeavePeriod->id, $leaveTypeId, 'Approved'));
 		$rejected = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $currentLeavePeriod->id, $leaveTypeId, 'Rejected'));
+		$cancelRequested = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $currentLeavePeriod->id, $leaveTypeId, 'Cancellation Requested'));
+		$cancelled = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $currentLeavePeriod->id, $leaveTypeId, 'Cancelled'));
+		
 
-		return array($avalilable,$pending,$approved,$rejected,$avalilableLeaves[1]);
+		return array($avalilable,$pending,$approved,$rejected,$avalilableLeaves[1],$cancelRequested,$cancelled);
 
 
 	}
@@ -406,18 +482,27 @@ class LeavesActionManager extends SubActionManager{
 	 */
 	private function getAvailableLeaveCount($employee, $rule, $currentLeavePeriod, $leaveTypeId){
 		
+		LogManager::getInstance()->info("getAvailableLeaveCount:".print_r(array($employee, $rule, $currentLeavePeriod, $leaveTypeId),true));
+		
 		$availableLeaveArray = array();
 		
 		$currentLeaves = floatval($rule->default_per_year);
 		
-		//If the employee joined in current leave period, his leaves should be calculated proportional to joined date
-		if($employee->joined_date != "0000-00-00 00:00:00" && !empty($employee->joined_date)){
-			if(strtotime($currentLeavePeriod->date_start) < strtotime($employee->joined_date)){
-				$currentLeaves = floatval($currentLeaves * (strtotime($currentLeavePeriod->date_end) - strtotime($employee->joined_date))/(strtotime($currentLeavePeriod->date_end) - strtotime($currentLeavePeriod->date_start)));
+		LogManager::getInstance()->info("Leaves before propotionate on joined date :".$currentLeaves);
+		
+		if($rule->propotionate_on_joined_date == "Yes"){
+			//If the employee joined in current leave period, his leaves should be calculated proportional to joined date
+			if($employee->joined_date != "0000-00-00 00:00:00" && !empty($employee->joined_date)){
+				if(strtotime($currentLeavePeriod->date_start) < strtotime($employee->joined_date)){
+					$currentLeaves = floatval($currentLeaves * (strtotime($currentLeavePeriod->date_end) - strtotime($employee->joined_date))/(strtotime($currentLeavePeriod->date_end) - strtotime($currentLeavePeriod->date_start)));
+				}
 			}
+				
 		}
 		
-		$availableLeaveArray["total"] = round($currentLeaves,2);
+		$availableLeaveArray["total"] = round($currentLeaves,3);
+		
+		LogManager::getInstance()->info("Leaves after propotionate on joined date :".$currentLeaves);
 		
 		if($rule->leave_accrue == "Yes"){
 			$dateTodayTime = strtotime(date("Y-m-d"));	
@@ -430,7 +515,9 @@ class LeavesActionManager extends SubActionManager{
 			$currentLeaves = floatval(($currentLeaves * $datediffFromStart)/$datediffPeriod);
 		}	
 		
-		$availableLeaveArray["accrued"] = round($currentLeaves,2);
+		LogManager::getInstance()->info("Leaves after accrue :".$currentLeaves);
+		
+		$availableLeaveArray["accrued"] = round($currentLeaves,3);
 		
 		$availableLeaveArray["carriedForward"] = 0;
 
@@ -445,24 +532,55 @@ class LeavesActionManager extends SubActionManager{
 				$prvLeavePeriod = $resp->getData();
 				$avalilable = $rule->default_per_year;
 				
-				//If the employee joined in this leave period, his leaves should be calculated proportionally
-				if($employee->joined_date != "0000-00-00 00:00:00" && !empty($employee->joined_date)){
-					if(strtotime($prvLeavePeriod->date_start) < strtotime($employee->joined_date)){
-						$avalilable = floatval($avalilable * (strtotime($prvLeavePeriod->date_end) - strtotime($employee->joined_date))/(strtotime($prvLeavePeriod->date_end) - strtotime($prvLeavePeriod->date_start)));
+				LogManager::getInstance()->info("Leaves in previous leave period :".$avalilable);
+				
+				if($rule->propotionate_on_joined_date == "Yes"){
+					//If the employee joined in this leave period, his leaves should be calculated proportionally
+					if($employee->joined_date != "0000-00-00 00:00:00" && !empty($employee->joined_date)){
+						if(strtotime($prvLeavePeriod->date_start) < strtotime($employee->joined_date)){
+							$avalilable = floatval($avalilable * (strtotime($prvLeavePeriod->date_end) - strtotime($employee->joined_date))/(strtotime($prvLeavePeriod->date_end) - strtotime($prvLeavePeriod->date_start)));
+						}
 					}
 				}
 				
+				LogManager::getInstance()->info("Leaves in previous leave period (after joined date):".$avalilable);
+				
+				if($rule->carried_forward_percentage.'' == "100"){
+					//do nothing
+				}else if($rule->carried_forward_percentage.'' == '0' || empty($rule->carried_forward_percentage)){
+					$avalilable = 0;
+				}else{
+					$avalilable = floatval($avalilable * floatval($rule->carried_forward_percentage) / 100);
+				}
+				
+				LogManager::getInstance()->info("Leaves in previous leave period (after carried forward percentage calculation):".$avalilable);
+				
+				if(!empty($rule->carried_forward_leave_availability)){
+					$dateDiff = (strtotime("now") - strtotime($currentLeavePeriod->date_start))/(60 * 60 * 24);		
+					if($dateDiff > $rule->carried_forward_leave_availability){
+						$avalilable = 0;
+					}
+				}
+				
+				LogManager::getInstance()->info("Leaves in previous leave period (after carried_forward_leave_availability calculation):".$avalilable);
+				
 				$approved = $this->countLeaveAmounts($this->getEmployeeLeaves($employee->id, $prvLeavePeriod->id, $leaveTypeId, 'Approved'));
+				
+				LogManager::getInstance()->info("Number of approved leaves:".$approved);
 				
 				$leavesCarriedForward =  floatval($avalilable) - floatval($approved);
 				if($leavesCarriedForward < 0){
 					$leavesCarriedForward = 0;
 				}
-				$availableLeaveArray["carriedForward"] =  round($leavesCarriedForward,2);
+				
+				LogManager::getInstance()->info("Number of approved leaves:".$leavesCarriedForward);
+				
+				$availableLeaveArray["carriedForward"] = round($leavesCarriedForward,3);
 				$currentLeaves = floatval($currentLeaves) + floatval($leavesCarriedForward);
+				$currentLeaves = round($currentLeaves,3);
 			}
 		}
-		
+		LogManager::getInstance()->info("Return:".print_r(array($currentLeaves, $availableLeaveArray),true));
 		return array($currentLeaves, $availableLeaveArray);
 	}
 
@@ -478,10 +596,22 @@ class LeavesActionManager extends SubActionManager{
 					$amount += 0.5;
 				}else if($leaveDay->leave_type == 'Half Day - Afternoon'){
 					$amount += 0.5;
+				}else if($leaveDay->leave_type == '1 Hour - Morning'){
+					$amount += 0.125;
+				}else if($leaveDay->leave_type == '2 Hours - Morning'){
+					$amount += 0.25;
+				}else if($leaveDay->leave_type == '3 Hours - Morning'){
+					$amount += 0.375;
+				}else if($leaveDay->leave_type == '1 Hour - Afternoon'){
+					$amount += 0.125;
+				}else if($leaveDay->leave_type == '2 Hours - Afternoon'){
+					$amount += 0.25;
+				}else if($leaveDay->leave_type == '3 Hours - Afternoon'){
+					$amount += 0.375;
 				}
 			}
 		}
-		return round(floatval($amount),2);
+		return round(floatval($amount),3);
 	}
 
 	private function getEmployeeLeaves($employeeId,$leavePeriod,$leaveType,$status){
@@ -517,6 +647,15 @@ class LeavesActionManager extends SubActionManager{
 			return new IceResponse(IceResponse::SUCCESS,$leavePeriod);
 		}
 	}
+	
+	private function getEmployeeLeaveGroup($employeeId){
+		$empLeaveGroup = new LeaveGroupEmployee();	
+		$empLeaveGroup->Load("employee = ?",array($employeeId));
+		if($empLeaveGroup->employee == $employeeId && !empty($empLeaveGroup->id)){
+			return $empLeaveGroup->leave_group;	
+		}
+		return null;
+	}
 
 	private function getLeaveRule($employee,$leaveType){
 		$rule = null;
@@ -526,26 +665,58 @@ class LeavesActionManager extends SubActionManager{
 		if(count($rules)>0){
 			return $rules[0];
 		}
-
+		
+		//Check whether this employee has a leave group
+		$leaveGroupId = $this->getEmployeeLeaveGroup($employee->id);
+		if(!empty($leaveGroupId)){
+			$rules = $leaveRule->Find("leave_group = ? and leave_type = ?",array($leaveGroupId,$leaveType));
+			if(count($rules)>0){
+				return $rules[0];
+			}
+			
+			$rules = $leaveRule->Find("leave_group = ? and job_title = ? and employment_status = ? and leave_type = ? and employee is null",array($leaveGroupId, $employee->job_title,$employee->employment_status,$leaveType));
+			if(count($rules)>0){
+				return $rules[0];
+			}
+				
+			$rules = $leaveRule->Find("leave_group = ? and job_title = ? and employment_status is null and leave_type = ? and employee is null",array($leaveGroupId, $employee->job_title,$leaveType));
+			if(count($rules)>0){
+				return $rules[0];
+			}
+				
+			$rules = $leaveRule->Find("leave_group = ? and job_title is null and employment_status = ? and leave_type = ? and employee is null",array($leaveGroupId, $employee->employment_status,$leaveType));
+			if(count($rules)>0){
+				return $rules[0];
+			}
+				
+			$rules = $leaveTypeObj->Find("leave_group = ? and id = ?",array($leaveGroupId, $leaveType));
+			if(count($rules)>0){
+				return $rules[0];
+			}
+			
+		}
+		
 		$rules = $leaveRule->Find("job_title = ? and employment_status = ? and leave_type = ? and employee is null",array($employee->job_title,$employee->employment_status,$leaveType));
 		if(count($rules)>0){
 			return $rules[0];
 		}
-
+			
 		$rules = $leaveRule->Find("job_title = ? and employment_status is null and leave_type = ? and employee is null",array($employee->job_title,$leaveType));
 		if(count($rules)>0){
 			return $rules[0];
 		}
-
+			
 		$rules = $leaveRule->Find("job_title is null and employment_status = ? and leave_type = ? and employee is null",array($employee->employment_status,$leaveType));
 		if(count($rules)>0){
 			return $rules[0];
 		}
-
+			
 		$rules = $leaveTypeObj->Find("id = ?",array($leaveType));
 		if(count($rules)>0){
 			return $rules[0];
 		}
+
+		
 
 	}
 	

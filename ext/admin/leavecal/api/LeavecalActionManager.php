@@ -42,8 +42,16 @@ class LeavecalActionManager extends SubActionManager{
 		}
 		
 		$data = array();
+		
+		$leaveType = new LeaveType();
+		$leaveTypesTemp = $leaveType->Find("1=1");
+		$leaveTypes = array();
+		foreach($leaveTypesTemp as $leaveType){
+			$leaveTypes[$leaveType->name] = $leaveType;
+		}
+		
 		foreach($list as $leave){
-			$data[] = $this->leaveToEvent($leave);
+			$data[] = $this->leaveToEvent($leave, $leaveTypes);
 		}
 		
 		$holiday = new HoliDay();
@@ -58,24 +66,35 @@ class LeavecalActionManager extends SubActionManager{
 	}
 	
 	
-	public function leaveToEvent($leave){
+	public function leaveToEvent($leave, $leaveTypes){
 		$event = array();
 		$event['id'] = $leave->id;
-		$event['title'] = $leave->employee." (".$leave->leave_type.")";
+		
 		$event['start'] = $leave->date_start;
 		$event['end'] = $leave->date_end;
 		$eventBackgroundColor = "";
-		if($leave->status == "Pending"){
-			$eventBackgroundColor = "#cc9900";
+		
+		if(empty($leaveTypes[$leave->leave_type]->leave_color)){
+			if($leave->status == "Pending"){
+				$eventBackgroundColor = "#cc9900";
+			}else{
+				$eventBackgroundColor = "#336633";
+			}	
+			$event['title'] = $leave->employee." (".$leave->leave_type.")";
 		}else{
-			$eventBackgroundColor = "#336633";
+			$eventBackgroundColor = $leaveTypes[$leave->leave_type]->leave_color;
+			$event['title'] = $leave->employee." (".$leave->status.")";
 		}
+		
+		
 		$event['color'] = $eventBackgroundColor;
 		$event['backgroundColor'] = $eventBackgroundColor;
 		$event['textColor'] = "#FFF";
 		
 		return $event;
 	}
+	
+
 	
 	public function holidayToEvent($holiday){
 		$event = array();

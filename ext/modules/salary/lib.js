@@ -53,7 +53,7 @@ EmployeeSalaryAdapter.method('getHeaders', function() {
 EmployeeSalaryAdapter.method('getFormFields', function() {
 	return [
 	        [ "id", {"label":"ID","type":"hidden"}],
-	        [ "component", {"label":"Salary Component","type":"text","validation":""}],
+            [ "component", {"label":"Salary Component","type":"select2","remote-source":["SalaryComponent","id","name"]}],
 	        [ "pay_frequency", {"label":"Pay Frequency","type":"select","source":[["Hourly","Hourly"],["Daily","Daily"],["Bi Weekly","Bi Weekly"],["Weekly","Weekly"],["Semi Monthly","Semi Monthly"],["Monthly","Monthly"]]}],
 	        [ "currency", {"label":"Currency","type":"select","remote-source":["CurrencyType","id","name"]}],
 	        [ "amount", {"label":"Amount","type":"text","validation":"float"}],

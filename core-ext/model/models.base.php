@@ -5,6 +5,10 @@ class ICEHRM_Record extends ADOdb_Active_Record{
 		return array("get","element","save","delete");
 	}
 
+    public function getOtherAccess(){
+        return array("get","element","save","delete");
+    }
+
 	public function getManagerAccess(){
 		return array("get","element");
 	}
@@ -55,5 +59,14 @@ class ICEHRM_Record extends ADOdb_Active_Record{
 
     public function postProcessGetData($obj){
         return $obj;
+    }
+
+    public function getDefaultAccessLevel(){
+        return array("get","element","save","delete");
+    }
+
+    public function getVirtualFields(){
+        return array(
+        );
     }
 }

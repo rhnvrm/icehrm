@@ -11,7 +11,7 @@ if (!class_exists('ProjectsAdminManager')) {
 		}
 
 		public function initializeDatabaseErrorMappings(){
-
+            $this->addDatabaseErrorMapping("key 'EmployeeProjectsKey'", "Employee already added to this project");
 		}
 
 		public function setupModuleClassDefinitions(){

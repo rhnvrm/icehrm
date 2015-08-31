@@ -52,12 +52,16 @@ EmployeeLeaveAdapter.method('getHeaders', function() {
 EmployeeLeaveAdapter.method('getFormFields', function() {
 	return [
 	        [ "id", {"label":"ID","type":"hidden"}],
-	        [ "leave_type", {"label":"Leave Type","type":"select","remote-source":["LeaveType","id","name"]}],
+	        [ "leave_type", {"label":"Leave Type","type":"select","remote-source":["LeaveType","id","name","getUserLeaveTypes"]}],
 	        [ "date_start", {"label":"Leave Start Date","type":"date","validation":""}],
 	        [ "date_end", {"label":"Leave End Date","type":"date","validation":""}],
 	        [ "details", {"label":"Reason","type":"textarea","validation":"none"}],
 	        [ "attachment", {"label":"Attachment","type":"fileupload","validation":"none"}]
 	];
+});
+
+EmployeeLeaveAdapter.method('getAddNewLabel', function() {
+	return "Apply Leave";
 });
 
 
@@ -116,8 +120,22 @@ EmployeeLeaveAdapter.method('calculateNumberOfLeavesObject', function(days) {
 	for(var i=0;i<days.length;i++){
 		if(days[i].leave_type == "Full Day"){
 			sum += 1;
-		}else{
+		}else if(days[i].leave_type == 'Half Day - Morning'){
 			sum += 0.5;
+		}else if(days[i].leave_type == 'Half Day - Afternoon'){
+			sum += 0.5;
+		}else if(days[i].leave_type == '1 Hour - Morning'){
+			sum += 0.125;
+		}else if(days[i].leave_type == '2 Hours - Morning'){
+			sum += 0.25;
+		}else if(days[i].leave_type == '3 Hours - Morning'){
+			sum += 0.375;
+		}else if(days[i].leave_type == '1 Hour - Afternoon'){
+			sum += 0.125;
+		}else if(days[i].leave_type == '2 Hours - Afternoon'){
+			sum += 0.25;
+		}else if(days[i].leave_type == '3 Hours - Afternoon'){
+			sum += 0.375;
 		}
 	}
 	return sum;
@@ -162,11 +180,12 @@ EmployeeLeaveAdapter.method('getLeaveDaysSuccessCallBack', function(callBackData
 	this.leaveInfo = callBackData[1];
 	this.currentLeaveRule = callBackData[2];
 	$('#leave_days_table_body').html('');
-	var selectH = '<select id="_id_" class="days"><option value="Half Day - Morning">Half Day - Morning</option><option value="Half Day - Afternoon">Half Day - Afternoon</option></select>';
-	var selectF = '<select id="_id_" class="days"><option value="Full Day">Full Day</option><option value="Half Day - Morning">Half Day - Morning</option><option value="Half Day - Afternoon">Half Day - Afternoon</option></select>';
+	var selectH = '<select id="_id_" class="days"><option value="Half Day - Morning">Half Day - Morning</option><option value="Half Day - Afternoon">Half Day - Afternoon</option><option value="1 Hour - Morning">1 Hour - Morning</option><option value="2 Hours - Morning">2 Hours - Morning</option><option value="3 Hours - Morning">3 Hours - Morning</option><option value="1 Hour - Afternoon">1 Hour - Afternoon</option><option value="2 Hours - Afternoon">2 Hours - Afternoon</option><option value="3 Hours - Afternoon">3 Hours - Afternoon</option></select>';
+	var selectF = '<select id="_id_" class="days"><option value="Full Day">Full Day</option><option value="Half Day - Morning">Half Day - Morning</option><option value="Half Day - Afternoon">Half Day - Afternoon</option><option value="1 Hour - Morning">1 Hour - Morning</option><option value="2 Hours - Morning">2 Hours - Morning</option><option value="3 Hours - Morning">3 Hours - Morning</option><option value="1 Hour - Afternoon">1 Hour - Afternoon</option><option value="2 Hours - Afternoon">2 Hours - Afternoon</option><option value="3 Hours - Afternoon">3 Hours - Afternoon</option></select>';
 	var row = '<tr><td>_date_</td><td>_select_</td></tr>';
 	var select;
 	var html = "";
+	var numberOfWorkingDays = 0;
 	$.each(days, function(key, value) { 
 		
 		if(value+''!='2'){
@@ -178,7 +197,7 @@ EmployeeLeaveAdapter.method('getLeaveDaysSuccessCallBack', function(callBackData
 			}
 			var tkey = key.split("-").join("");
 			select = select.replace(/_id_/g, tkey);
-			
+			numberOfWorkingDays++;
 		}else{
 			select = '<span class="label label-info">Non working day</span>';
 		}
@@ -188,6 +207,11 @@ EmployeeLeaveAdapter.method('getLeaveDaysSuccessCallBack', function(callBackData
 		trow = trow.replace(/_select_/g,select);
 		html += trow;
 	});
+	
+	if(numberOfWorkingDays == 0){
+		this.showMessage("No Working Days", "No working days are selected in leave period. Please change leave period");
+		return false;
+	}
 	
 	
 	$('#leave_days_table_body').html(html);
@@ -323,8 +347,47 @@ EmployeeLeaveAdapter.method('getActionButtonsHtml', function(id,data) {
 });
 
 
+/*
+ * EmployeeApprovedLeaveAdapter
+ */
+function EmployeeApprovedLeaveAdapter(endPoint,tab,filter,orderBy) {
+	this.initAdapter(endPoint,tab,filter,orderBy);
+}
 
+EmployeeApprovedLeaveAdapter.inherits(EmployeeLeaveAdapter);
 
+EmployeeApprovedLeaveAdapter.method('getActionButtonsHtml', function(id,data) {
+	var html = '<div style="width:80px;"><img class="tableActionButton" src="_BASE_images/info.png" style="cursor:pointer;" rel="tooltip" title="Show Leave Days" onclick="modJs.getLeaveDaysReadonly(_id_);return false;"></img><img class="tableActionButton" src="_BASE_images/delete.png" style="margin-left:15px;cursor:pointer;" rel="tooltip" title="Cancel Leave" onclick="modJs.cancelLeave(_id_);return false;"></img></div>';
+	
+	html = html.replace(/_id_/g,id);
+	html = html.replace(/_BASE_/g,this.baseUrl);
+	
+	return html;
+});
+
+EmployeeApprovedLeaveAdapter.method('cancelLeave', function(id) {
+	var that = this;
+	var object = {};
+	object['id'] = id;
+	
+	var reqJson = JSON.stringify(object);
+	
+	var callBackData = [];
+	callBackData['callBackData'] = [];
+	callBackData['callBackSuccess'] = 'cancelSuccessCallBack';
+	callBackData['callBackFail'] = 'cancelFailCallBack';
+	
+	this.customAction('cancelLeave','modules=leaves',reqJson,callBackData);
+});
+
+EmployeeApprovedLeaveAdapter.method('cancelSuccessCallBack', function(callBackData) {
+	this.showMessage("Successful", "Leave cancellation request sent");
+	this.get([]);
+});
+
+EmployeeApprovedLeaveAdapter.method('cancelFailCallBack', function(callBackData) {
+	this.showMessage("Error Occured while cancelling Leave", callBackData);
+});
 
 /*
  * Subordinate Leaves

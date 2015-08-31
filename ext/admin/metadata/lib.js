@@ -123,40 +123,36 @@ CurrencyTypeAdapter.method('getFormFields', function() {
 	];
 });
 
-
 /**
  * NationalityAdapter
  */
 
 function NationalityAdapter(endPoint) {
+    this.initAdapter(endPoint);
+}
+
+NationalityAdapter.inherits(IdNameAdapter);
+
+/**
+ * ImmigrationStatusAdapter
+ */
+
+function ImmigrationStatusAdapter(endPoint) {
 	this.initAdapter(endPoint);
 }
 
-NationalityAdapter.inherits(AdapterBase);
+ImmigrationStatusAdapter.inherits(IdNameAdapter);
 
 
+/**
+ * EthnicityAdapter
+ */
 
-NationalityAdapter.method('getDataMapping', function() {
-	return [
-	        "id",
-	        "name"
-	];
-});
+function EthnicityAdapter(endPoint) {
+    this.initAdapter(endPoint);
+}
 
-NationalityAdapter.method('getHeaders', function() {
-	return [
-			{ "sTitle": "ID" ,"bVisible":false},
-			{ "sTitle": "Name"}
-	];
-});
-
-NationalityAdapter.method('getFormFields', function() {
-	return [
-	        [ "id", {"label":"ID","type":"hidden"}],
-	        [ "name", {"label":"Name","type":"text","validation":""}]
-	];
-});
-
+EthnicityAdapter.inherits(IdNameAdapter);
 
 
 

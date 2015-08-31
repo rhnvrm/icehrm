@@ -29,7 +29,8 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 			  
 	<ul class="nav nav-tabs" id="modTab" style="margin-bottom:0px;margin-left:5px;border-bottom: none;">
 		<li class="active"><a id="tabAttendance" href="#tabPageAttendance">Monitor Attendance</a></li>
-		<!--  
+        <li class=""><a id="tabAttendanceStatus" href="#tabPageAttendanceStatus">Current Clocked In Status</a></li>
+        <!--
 		<li class=""><a id="tabAttendanceData" href="#tabPageAttendanceData">Attendance Data Update</a></li>
 		-->
 	</ul>
@@ -43,6 +44,14 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 		
 			</div>
 		</div>
+        <div class="tab-pane" id="tabPageAttendanceStatus">
+            <div id="AttendanceStatus" class="reviewBlock" data-content="List" style="padding-left:5px;">
+
+            </div>
+            <div id="AttendanceStatusForm" class="reviewBlock" data-content="Form" style="padding-left:5px;display:none;">
+
+            </div>
+        </div>
 		<!--  
 		<div class="tab-pane" id="tabPageAttendanceData">
 			<div class="control-group" id="field__id_">
@@ -65,6 +74,8 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 var modJsList = new Array();
 modJsList['tabAttendance'] = new AttendanceAdapter('Attendance','Attendance','','in_time desc');
 modJsList['tabAttendance'].setRemoteTable(true);
+modJsList['tabAttendanceStatus'] = new AttendanceStatusAdapter('AttendanceStatus','AttendanceStatus','','');
+modJsList['tabAttendanceStatus'].setShowAddNew(false);
 var modJs = modJsList['tabAttendance'];
 
 </script>

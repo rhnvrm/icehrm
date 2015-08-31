@@ -90,10 +90,11 @@ foreach($ams as $am){
 		$arr['menu'] = $meta->menu;	
 		$arr['order'] = $meta->order;
 		$arr['user_levels'] = $meta->user_levels;
+        $arr['user_roles'] = isset($meta->user_roles)?$meta->user_roles:"";
 		
 		//Check in admin dbmodules
-		if(isset($adminDBModuleList[$arr['label']])){
-			$dbModule = $adminDBModuleList[$arr['label']];
+		if(isset($adminDBModuleList[$arr['name']])){
+			$dbModule = $adminDBModuleList[$arr['name']];
 			
 			if($addNewPermissions && isset($meta->permissions)){
 				createPermissions($meta, $dbModule->id);
@@ -102,10 +103,21 @@ foreach($ams as $am){
 			if($dbModule->status == 'Disabled'){
 				continue;	
 			}
+
+
+            $arr['name'] = $dbModule->name;
+            $arr['label'] = $dbModule->label;
+            $arr['icon'] = $dbModule->icon;
+            $arr['menu'] = $dbModule->menu;
+            $arr['order'] = $dbModule->mod_order;
+            $arr['user_levels'] = json_decode($dbModule->user_levels);
+            $arr['user_roles'] = json_decode($dbModule->user_roles);
+
 		}else{
 			$dbModule = new Module();
 			$dbModule->menu = $arr['menu'];
-			$dbModule->name = $arr['label'];
+			$dbModule->name = $arr['name'];
+			$dbModule->label = $arr['label'];
 			$dbModule->icon = $arr['icon'];
 			$dbModule->mod_group = "admin";
 			$dbModule->mod_order = $arr['order'];
@@ -113,6 +125,7 @@ foreach($ams as $am){
 			$dbModule->version = isset($meta->version)?$meta->version:"";
 			$dbModule->update_path = "admin>".$am;
 			$dbModule->user_levels = isset($meta->user_levels)?json_encode($meta->user_levels):"";
+            $dbModule->user_roles = isset($meta->user_roles)?json_encode($meta->user_roles):"";
 			$dbModule->Save();
 			
 			if(isset($meta->permissions)){
@@ -161,10 +174,11 @@ foreach($ams as $am){
 		$arr['menu'] = $meta->menu;	
 		$arr['order'] = $meta->order;
 		$arr['user_levels'] = $meta->user_levels;
-		
+		$arr['user_roles'] = isset($meta->user_roles)?$meta->user_roles:"";
+
 		//Check in admin dbmodules
-		if(isset($userDBModuleList[$arr['label']])){
-			$dbModule = $userDBModuleList[$arr['label']];
+		if(isset($userDBModuleList[$arr['name']])){
+			$dbModule = $userDBModuleList[$arr['name']];
 			
 			if($addNewPermissions && isset($meta->permissions)){
 				createPermissions($meta, $dbModule->id);
@@ -173,10 +187,20 @@ foreach($ams as $am){
 			if($dbModule->status == 'Disabled'){
 				continue;
 			}
+
+            $arr['name'] = $dbModule->name;
+            $arr['label'] = $dbModule->label;
+            $arr['icon'] = $dbModule->icon;
+            $arr['menu'] = $dbModule->menu;
+            $arr['order'] = $dbModule->mod_order;
+            $arr['user_levels'] = json_decode($dbModule->user_levels);
+            $arr['user_roles'] = json_decode($dbModule->user_roles);
+
 		}else{
 			$dbModule = new Module();
 			$dbModule->menu = $arr['menu'];
-			$dbModule->name = $arr['label'];
+			$dbModule->name = $arr['name'];
+			$dbModule->label = $arr['label'];
 			$dbModule->icon = $arr['icon'];
 			$dbModule->mod_group = "user";
 			$dbModule->mod_order = $arr['order'];
@@ -184,6 +208,7 @@ foreach($ams as $am){
 			$dbModule->version = isset($meta->version)?$meta->version:"";
 			$dbModule->update_path = "modules>".$am;
 			$dbModule->user_levels = isset($meta->user_levels)?json_encode($meta->user_levels):"";
+			$dbModule->user_roles = isset($meta->user_roles)?json_encode($meta->user_roles):"";
 			$dbModule->Save();
 			
 			if(isset($meta->permissions)){
@@ -274,11 +299,24 @@ foreach($userModulesTemp as $k=>$v){
 
 //Remove modules having no permissions
 if(!empty($user)){
+    if(!empty($user->user_roles)){
+        $userRoles = json_decode($user->user_roles,true);
+    }else{
+        $userRoles = array();
+    }
+
 	foreach($adminModules as $fk => $menu){
 		foreach ($menu['menu'] as $key => $item){
 			if(!in_array($user->user_level,$item['user_levels'])){
-				//unset($menu['menu'][$key]);
-				unset($adminModules[$fk]['menu'][$key]);
+                if(!empty($userRoles)){
+                    $commonRoles = array_intersect($item['user_roles'], $userRoles);
+                    if(empty($commonRoles)){
+                        unset($adminModules[$fk]['menu'][$key]);
+                    }
+                }else{
+                    unset($adminModules[$fk]['menu'][$key]);
+                }
+
 			}
 		}
 	}
@@ -286,8 +324,15 @@ if(!empty($user)){
 	foreach($userModules as $fk => $menu){
 		foreach ($menu['menu'] as $key => $item){
 			if(!in_array($user->user_level,$item['user_levels'])){
-				//unset($menu['menu'][$key]);
-				unset($userModules[$fk]['menu'][$key]);
+
+                if(!empty($userRoles)){
+                    $commonRoles = array_intersect($item['user_roles'], $userRoles);
+                    if(empty($commonRoles)){
+                        unset($userModules[$fk]['menu'][$key]);
+                    }
+                }else{
+                    unset($userModules[$fk]['menu'][$key]);
+                }
 			}
 		}
 	}	

@@ -20,6 +20,8 @@ if (!class_exists('MetadataAdminManager')) {
 			$this->addModelClass('Province');
 			$this->addModelClass('CurrencyType');
 			$this->addModelClass('Nationality');
+			$this->addModelClass('ImmigrationStatus');
+			$this->addModelClass('Ethnicity');
 		}
 		
 	}
@@ -99,6 +101,43 @@ if (!class_exists('Nationality')) {
 	}
 }
 
+
+if (!class_exists('ImmigrationStatus')) {
+    class ImmigrationStatus extends ICEHRM_Record {
+        var $_table = 'ImmigrationStatus';
+
+        public function getAdminAccess(){
+            return array("get","element","save","delete");
+        }
+
+        public function getUserAccess(){
+            return array();
+        }
+
+        public function getAnonymousAccess(){
+            return array("get","element");
+        }
+    }
+}
+
+
+if (!class_exists('Ethnicity')) {
+    class Ethnicity extends ICEHRM_Record {
+        var $_table = 'Ethnicity';
+
+        public function getAdminAccess(){
+            return array("get","element","save","delete");
+        }
+
+        public function getUserAccess(){
+            return array();
+        }
+
+        public function getAnonymousAccess(){
+            return array("get","element");
+        }
+    }
+}
 
 
 

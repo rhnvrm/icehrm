@@ -181,6 +181,10 @@ AttendanceAdapter.method('getPunch', function(successCallBack) {
 	this.customAction('getPunch','modules=attendance',reqJson,callBackData);
 });
 
+AttendanceAdapter.method('postRenderForm', function(object, $tempDomObj) {
+    $("#Attendance").show();
+});
+
 
 
 AttendanceAdapter.method('showPunchDialogShowPunchSuccessCallBack', function(callBackData) {

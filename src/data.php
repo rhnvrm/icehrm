@@ -39,7 +39,8 @@ if(isset($_REQUEST['skip']) && $_REQUEST['type']="1"){
 	$skipProfileRestriction = true;
 }
 
-$data = BaseService::getInstance()->getData($_REQUEST['t'],$_REQUEST['sm'],$_REQUEST['ft'],$_REQUEST['ob'],$sLimit, $_REQUEST['cl'], $_REQUEST['sSearch'],$isSubOrdinates,$skipProfileRestriction);
+$sortData = BaseService::getInstance()->getSortingData($_REQUEST);
+$data = BaseService::getInstance()->getData($_REQUEST['t'],$_REQUEST['sm'],$_REQUEST['ft'],$_REQUEST['ob'],$sLimit, $_REQUEST['cl'], $_REQUEST['sSearch'],$isSubOrdinates,$skipProfileRestriction,$sortData);
 
 //Get Total row count
 $totalRows = 0;
