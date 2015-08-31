@@ -170,7 +170,19 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 			</div>
 		</div><!-- ./col -->                        
 	</div>
-	
+    <div class="callout callout-warning lead" style="font-size: 14px;margin-top:20%;">
+        <h4>Why not upgrade to IceHrm Pro</h4>
+        <p>
+            IceHrm Pro is the feature rich upgrade to IceHrm open source version. It comes with improved modules for
+            employee management, leave management, LDAP support and number of other features over open source version.
+            Hit this <a href="http://icehrm.com/#compare" class="btn btn-primary btn-xs">link</a> to do a full one to one comparison.
+
+            Also you can learn more about IceHrm Pro <a href="http://blog.icehrm.com/icehrm-pro/" class="btn btn-primary" target="_blank">here</a>
+            <br/>
+            <br/>
+            <a href="http://icehrm.com/modules.php" class="btn btn-success btm-xs" target="_blank"><i class="fa fa-checkout"></i> Buy IceHrm Pro</a>
+        </p>
+    </div>
 	
 
 </div>
