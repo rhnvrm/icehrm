@@ -125,3 +125,30 @@ if (!class_exists('LeaveRule')) {
 		}
 	}
 }
+
+if (!class_exists('LeaveGroup')) {
+    class LeaveGroup extends ICEHRM_Record {
+        var $_table = 'LeaveGroups';
+        public function getAdminAccess(){
+            return array("get","element","save","delete");
+        }
+
+        public function getUserAccess(){
+            return array();
+        }
+    }
+}
+
+
+if (!class_exists('LeaveGroupEmployee')) {
+    class LeaveGroupEmployee extends ICEHRM_Record {
+        var $_table = 'LeaveGroupEmployees';
+        public function getAdminAccess(){
+            return array("get","element","save","delete");
+        }
+
+        public function getUserAccess(){
+            return array();
+        }
+    }
+}

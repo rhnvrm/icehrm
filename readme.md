@@ -17,6 +17,16 @@ Once the application is installed use the username = admin and password = admin 
 
 Note: Please rename or delete the install folder (<ice hrm root>/app/install) since it could pose a security threat to your iCE Hrm instance.
 
+Release note v12.6
+-----------------
+
+### Features
+ * Charts module
+ * Code level security improvements
+ 
+### Fixes
+ * Employee switching issue fixed 
+
 Release note v10.2
 -----------------
 
@@ -146,7 +156,7 @@ Release note v7.1
 -----------------
 *Features
 *Improved company structure graph
-*Leave notes implementation – Supervisor can add a note when approving or rejecting leaves
+*Leave notes implementation ï¿½ Supervisor can add a note when approving or rejecting leaves
 *Filtering support
 *Select boxes with long lists are now searchable
 *Add/Edit/Delete company structure permissions added for managers
