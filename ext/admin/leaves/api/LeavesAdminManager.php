@@ -29,19 +29,42 @@ if (!class_exists('LeavesAdminManager')) {
 
 
 if (!class_exists('LeaveType')) {
-	class LeaveType extends ICEHRM_Record {
-		var $_table = 'LeaveTypes';
+    class LeaveType extends ICEHRM_Record {
+        var $_table = 'LeaveTypes';
 
-		public function getAdminAccess(){
-			return array("get","element","save","delete");
-		}
+        public function getAdminAccess(){
+            return array("get","element","save","delete");
+        }
 
 
-		public function getUserAccess(){
-			return array();
-		}
+        public function getUserAccess(){
+            return array();
+        }
 
-	}
+        public function isProcessMappings(){
+            return true;
+        }
+
+
+        public function getUserLeaveTypes(){
+            $ele = new LeaveType();
+            $empLeaveGroupId = NULL;
+            $employeeId = BaseService::getInstance()->getCurrentProfileId();
+            $empLeaveGroup = new LeaveGroupEmployee();
+            $empLeaveGroup->Load("employee = ?",array($employeeId));
+            if($empLeaveGroup->employee == $employeeId && !empty($empLeaveGroup->id)){
+                $empLeaveGroupId =  $empLeaveGroup->leave_group;
+            }
+
+            if(empty($empLeaveGroupId)){
+                $list = $ele->Find('leave_group IS NULL',array());
+            }else{
+                $list = $ele->Find('leave_group IS NULL or leave_group = ?',array($empLeaveGroupId));
+            }
+
+            return $list;
+        }
+    }
 }
 	
 if (!class_exists('LeavePeriod')) {
