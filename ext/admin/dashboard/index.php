@@ -27,8 +27,8 @@ include APP_BASE_PATH.'header.php';
 include APP_BASE_PATH.'modulejslibs.inc.php';
 ?><div class="span9">
     <div id="iceannon">
-        <div class="callout callout-warning lead" style="font-size: 14px;margin-top:20%;">
-            <h4>Why not upgrade to IceHrm Pro</h4>
+        <div class="callout callout-warning lead" style="font-size: 14px;">
+            <h4>Why not upgrade to IceHrm Pro Version</h4>
             <p>
                 IceHrm Pro is the feature rich upgrade to IceHrm open source version. It comes with improved modules for
                 employee management, leave management, LDAP support and number of other features over open source version.
