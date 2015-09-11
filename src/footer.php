@@ -63,7 +63,7 @@
 				$(this).tab('show');
 				modJs = modJsList[$(this).attr('id')];
 				modJs.get([]);
-
+                modJs.initFieldMasterData();
 				var helpLink = modJs.getHelpLink();
 				if(helpLink != null && helpLink != undefined){
 					$('.helpLink').attr('href',helpLink);

@@ -26,6 +26,21 @@ define('MODULE_PATH',dirname(__FILE__));
 include APP_BASE_PATH.'header.php';
 include APP_BASE_PATH.'modulejslibs.inc.php';
 ?><div class="span9">
+    <div id="iceannon">
+        <div class="callout callout-warning lead" style="font-size: 14px;margin-top:20%;">
+            <h4>Why not upgrade to IceHrm Pro</h4>
+            <p>
+                IceHrm Pro is the feature rich upgrade to IceHrm open source version. It comes with improved modules for
+                employee management, leave management, LDAP support and number of other features over open source version.
+                Hit this <a href="http://icehrm.com/#compare" class="btn btn-primary btn-xs target="_blank">link</a> to do a full one to one comparison.
+
+                Also you can learn more about IceHrm Pro <a href="http://blog.icehrm.com/icehrm-pro/" class="btn btn-primary btn-xs" target="_blank">here</a>
+                <br/>
+                <br/>
+                <a href="http://icehrm.com/modules.php" class="btn btn-success btm-xs" target="_blank"><i class="fa fa-checkout"></i> Buy IceHrm Pro</a>
+            </p>
+        </div>
+    </div>
 			  
 	<div class="row">
 		<div class="col-lg-3 col-xs-6">
@@ -170,19 +185,7 @@ include APP_BASE_PATH.'modulejslibs.inc.php';
 			</div>
 		</div><!-- ./col -->                        
 	</div>
-    <div class="callout callout-warning lead" style="font-size: 14px;margin-top:20%;">
-        <h4>Why not upgrade to IceHrm Pro</h4>
-        <p>
-            IceHrm Pro is the feature rich upgrade to IceHrm open source version. It comes with improved modules for
-            employee management, leave management, LDAP support and number of other features over open source version.
-            Hit this <a href="http://icehrm.com/#compare" class="btn btn-primary btn-xs target="_blank">link</a> to do a full one to one comparison.
 
-            Also you can learn more about IceHrm Pro <a href="http://blog.icehrm.com/icehrm-pro/" class="btn btn-primary btn-xs" target="_blank">here</a>
-            <br/>
-            <br/>
-            <a href="http://icehrm.com/modules.php" class="btn btn-success btm-xs" target="_blank"><i class="fa fa-checkout"></i> Buy IceHrm Pro</a>
-        </p>
-    </div>
 	
 
 </div>
@@ -203,6 +206,18 @@ $("#reportsLink").attr("href",modJs.getCustomUrl('?g=admin&n=reports&m=admin_Rep
 $("#settingsLink").attr("href",modJs.getCustomUrl('?g=admin&n=settings&m=admin_System'));
 
 modJs.getInitData();
+
+$(document).ready(function(){
+    try{
+        $.ajax({
+            url : "https://icehrm-public.s3.amazonaws.com/icehrmnews.html",
+            success : function(result){
+                $('#iceannon').html(result);
+            }
+        });
+    }catch(e){}
+
+});
 
 </script>
 <?php include APP_BASE_PATH.'footer.php';?>      

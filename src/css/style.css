@@ -481,16 +481,6 @@ table.dataTable{
 
 
 
-
-
-
-
-
-
-
-/custom for v11.0 */
-
-
 .table-bordered>thead>tr>th{
     border:none !important;
 }
@@ -577,4 +567,25 @@ table.dataTable{
 
 .headerSortDown {
     background: url('../images/sort_desc.png') no-repeat center right;
+}
+
+.hc-details{
+    z-index:9999;
+}
+
+.header{
+    cursor: pointer;
+}
+
+
+/* Full Cal */
+.fc-head{
+    height: 40px;
+    background-color: #3c8dbc;
+    font-size: 14px;
+    color: #FFF;
+}
+
+.fc-toolbar h2{
+    font-size: 15px;
 }

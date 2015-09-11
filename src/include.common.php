@@ -11,6 +11,7 @@ $cssVersion = defined('CACHE_VALUE')?CACHE_VALUE:"v".VERSION;
 include (APP_BASE_PATH."utils/SessionUtils.php");
 include (APP_BASE_PATH."utils/InputCleaner.php");
 include (APP_BASE_PATH."utils/LogManager.php");
+include (APP_BASE_PATH."utils/CalendarTools.php");
 
 
 $_REQUEST = InputCleaner::cleanParameters($_REQUEST);

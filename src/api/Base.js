@@ -1759,13 +1759,15 @@ IceHRMBase.method('renderFormSelectOptions', function(options, field) {
 	for (var key in options) {
 		tuples.push(options[key]);
 	}
+    if(field[1]['sort'] != 'none'){
+        tuples.sort(function(a, b) {
+            a = a[1];
+            b = b[1];
 
-	tuples.sort(function(a, b) {
-	    a = a[1];
-	    b = b[1];
+            return a < b ? -1 : (a > b ? 1 : 0);
+        });
+    }
 
-	    return a < b ? -1 : (a > b ? 1 : 0);
-	});
 
 	for (var i = 0; i < tuples.length; i++) {
 	    var prop = tuples[i][0];
@@ -1798,13 +1800,14 @@ IceHRMBase.method('renderFormSelectOptionsRemote', function(options,field) {
 	for (var key in options) {
 		tuples.push([key, options[key]]);
 	}
+    if(field[1]['sort'] != 'none') {
+        tuples.sort(function (a, b) {
+            a = a[1];
+            b = b[1];
 
-	tuples.sort(function(a, b) {
-	    a = a[1];
-	    b = b[1];
-
-	    return a < b ? -1 : (a > b ? 1 : 0);
-	});
+            return a < b ? -1 : (a > b ? 1 : 0);
+        });
+    }
 
 	for (var i = 0; i < tuples.length; i++) {
 	    var prop = tuples[i][0];

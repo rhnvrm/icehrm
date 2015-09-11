@@ -321,8 +321,7 @@ class BaseService{
                     $subordinatesIds.=$sub->id;
                 }
                 $subordinatesIds.="";
-                //$signInMappingField = SIGN_IN_ELEMENT_MAPPING_FIELD_NAME;
-                $signInMappingField = $subordinate->getUserOnlyMeAccessField();
+                $signInMappingField = $obj->getUserOnlyMeAccessField();
                 LogManager::getInstance()->debug("Data Load Query (a1):".$signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit);
                 $list = $obj->Find($signInMappingField." in (".$subordinatesIds.") ".$query.$orderBy.$limit, $queryData);
             }else{
@@ -1116,4 +1115,5 @@ class IceConstants{
 	
 	const NOTIFICATION_LEAVE = "Leave Module";
 	const NOTIFICATION_TIMESHEET = "Time Module";
+    const NOTIFICATION_TRAINING = "Training Module";
 }

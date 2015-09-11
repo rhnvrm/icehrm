@@ -99,17 +99,20 @@ include('configureUIManager.php');
 		<script src="<?=BASE_URL?>js/bootstrap-datepicker.js"></script>
 		<script src="<?=BASE_URL?>js/jquery.timepicker.js"></script>
 		<script src="<?=BASE_URL?>js/bootstrap-datetimepicker.js"></script>
-		<script src="<?=BASE_URL?>js/fullcalendar.min.js"></script>
 		<script src="<?=BASE_URL?>js/select2/select2.min.js"></script>
 		<script src="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/js/bootstrap-colorpicker.min.js"></script>
-		
-	   
+
+        <!--fullcaledar-->
+
+        <link href="<?=BASE_URL?>js/fullcaledar/fullcalendar.css" rel="stylesheet">
+        <link href="<?=BASE_URL?>js/fullcaledar/fullcalendar.print.css" rel="stylesheet" media="print">
+        <script src="<?=BASE_URL?>js/fullcaledar/lib/moment.min.js"></script>
+        <script src="<?=BASE_URL?>js/fullcaledar/fullcalendar.min.js"></script>
 
 	    <link href="<?=BASE_URL?>themecss/datatables/dataTables.bootstrap.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>css/jquery.timepicker.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>css/datepicker.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>css/fullcalendar.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>js/select2/select2.css" rel="stylesheet">
 	    <link href="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 	    
