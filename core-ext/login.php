@@ -259,6 +259,9 @@ if(!file_exists($logoFileName)){
 							<a href="<?=TWITTER_URL?>" target="_blank" style="float:right;"><img src="<?=BASE_URL?>images/32x32-Circle-53-TW.png"/></a>
 							<a href="<?=FB_URL?>" target="_blank" style="float:right;margin-right: 7px;"><img src="<?=BASE_URL?>images/32x32-Circle-54-FB.png"/></a>
 						</div>
+                        <div class="clearfix">
+                            <span>&copy; <a href="http://icehrm.com" target="_blank">IceHrm - v<?=VERSION?></a> Developed by <a href="http://gamonoid.com" target="_blank">Gamonoid (Pvt) Ltd.</a></span>
+                        </div>
 					</form>
 					<form id="requestPasswordChangeForm" style="display:none;" action="">
 						<fieldset>
