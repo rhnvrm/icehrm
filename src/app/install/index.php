@@ -195,7 +195,7 @@ if(!$isDataFolderExists){
 			<div class="control-group">
 				<label class="control-label" for="LOG">Log file path</label>
 				<div class="controls">
-				  	<input class="input-xxlarge" type="text" id="LOG" name="LOG" value="/tmp/icehrm.log"/>
+				  	<input class="input-xxlarge" type="text" id="LOG" name="LOG" value="data/icehrm.log"/>
 				  	<span class="help-inline p1">Keep this empty if you want logs to be in web server's default logs</span>
 				</div>
 			</div>
