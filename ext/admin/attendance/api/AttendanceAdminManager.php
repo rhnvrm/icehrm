@@ -63,7 +63,8 @@ if (!class_exists('AttendanceStatus')) {
             foreach($attendanceToday as $atEntry){
                 $entry = new stdClass();
                 $entry->id = $atEntry->employee;
-                $day = explode(" ",$atEntry->in_time)[0];
+                $dayArr = explode(" ",$atEntry->in_time);
+                $day = $dayArr[0];
                 if($atEntry->out_time == "0000-00-00 00:00:00" || empty($atEntry->out_time)){
                     if(strtotime($atEntry->in_time) < (time() + $shift * 60) && $day == date("Y-m-d")){
                         $entry->status = "Clocked In";
