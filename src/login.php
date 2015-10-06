@@ -57,23 +57,23 @@ if(!file_exists($logoFileName)){
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?=APP_NAME?> Login</title>
+    <title><?php echo APP_NAME?> Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="<?=BASE_URL?>bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL?>bootstrap/css/bootstrap.css" rel="stylesheet">
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.js"></script>
-    <script src="<?=BASE_URL?>bootstrap/js/bootstrap.js"></script>
-	<script src="<?=BASE_URL?>js/jquery.placeholder.js"></script>
-	<script src="<?=BASE_URL?>js/jquery.dataTables.js"></script>
-	<script src="<?=BASE_URL?>js/bootstrap-datepicker.js"></script>
-    <link href="<?=BASE_URL?>bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="<?=BASE_URL?>css/DT_bootstrap.css?v=0.4" rel="stylesheet">
-    <link href="<?=BASE_URL?>css/datepicker.css" rel="stylesheet">
-    <link href="<?=BASE_URL?>css/style.css?v=<?=$cssVersion?>" rel="stylesheet">
+    <script src="<?php echo BASE_URL?>bootstrap/js/bootstrap.js"></script>
+	<script src="<?php echo BASE_URL?>js/jquery.placeholder.js"></script>
+	<script src="<?php echo BASE_URL?>js/jquery.dataTables.js"></script>
+	<script src="<?php echo BASE_URL?>js/bootstrap-datepicker.js"></script>
+    <link href="<?php echo BASE_URL?>bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL?>css/DT_bootstrap.css?v=0.4" rel="stylesheet">
+    <link href="<?php echo BASE_URL?>css/datepicker.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL?>css/style.css?v=<?php echo $cssVersion?>" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -128,7 +128,7 @@ if(!file_exists($logoFileName)){
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', '<?=BaseService::getInstance()->getGAKey()?>', 'gamonoid.com');
+  ga('create', '<?php echo BaseService::getInstance()->getGAKey()?>', 'gamonoid.com');
   ga('send', 'pageview');
 
   </script>
@@ -136,7 +136,7 @@ if(!file_exists($logoFileName)){
   <script type="text/javascript">
 	var key = "";
   <?php if(isset($_REQUEST['key'])){?>
-  	key = '<?=$_REQUEST['key']?>';
+  	key = '<?php echo $_REQUEST['key']?>';
   	key = key.replace(/ /g,"+");
   <?php }?>
 
@@ -211,7 +211,7 @@ if(!file_exists($logoFileName)){
 		<div class="content" style="margin-top:100px;">
 			<div class="row">
 				<div class="login-form">
-					<h2><img src="<?=$logoFileUrl?>"/></h2>
+					<h2><img src="<?php echo $logoFileUrl?>"/></h2>
 					<?php if(!isset($_REQUEST['cp'])){?>
 					<form id="loginForm" action="login.php" method="POST">
 						<fieldset>
@@ -244,8 +244,8 @@ if(!file_exists($logoFileName)){
 						</fieldset>
 						<div class="clearfix">
 							<a href="" onclick="showForgotPassword();return false;" style="float:left;margin-top: 10px;">Forgot password</a>
-							<a href="<?=TWITTER_URL?>" target="_blank" style="float:right;"><img src="<?=BASE_URL?>images/32x32-Circle-53-TW.png"/></a>
-							<a href="<?=FB_URL?>" target="_blank" style="float:right;margin-right: 7px;"><img src="<?=BASE_URL?>images/32x32-Circle-54-FB.png"/></a>
+							<a href="<?php echo TWITTER_URL?>" target="_blank" style="float:right;"><img src="<?php echo BASE_URL?>images/32x32-Circle-53-TW.png"/></a>
+							<a href="<?php echo FB_URL?>" target="_blank" style="float:right;margin-right: 7px;"><img src="<?php echo BASE_URL?>images/32x32-Circle-54-FB.png"/></a>
 						</div>
 					</form>
 					<form id="requestPasswordChangeForm" style="display:none;" action="">

@@ -110,8 +110,8 @@ modJsList['tabSubEmployeeTimeSheetAll'].setRemoteTable(true);
 
 modJsList['tabEmployeeTimeEntry'] = new EmployeeTimeEntryAdapter('EmployeeTimeEntry','EmployeeTimeEntry','','');
 modJsList['tabEmployeeTimeEntry'].setShowAddNew(false);
-modJsList['tabEmployeeTimeEntry'].setAllProjectsAllowed(<?=$allowAllProjects?>);
-modJsList['tabEmployeeTimeEntry'].setEmployeeProjects(<?=json_encode($employeeProjects)?>);
+modJsList['tabEmployeeTimeEntry'].setAllProjectsAllowed(<?php echo $allowAllProjects?>);
+modJsList['tabEmployeeTimeEntry'].setEmployeeProjects(<?php echo json_encode($employeeProjects)?>);
 
 var modJs = modJsList['tabEmployeeTimeSheetAll'];
 

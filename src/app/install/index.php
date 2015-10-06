@@ -168,15 +168,15 @@ if(!$isDataFolderExists){
 	  	<?php foreach($errorMap as $error){?>
 	  	<p class="p2">
 	  	<!--  
-	  	<span style="" class="label label-<?=$error[0]?>"><?=$error[1]?></span><br/>
+	  	<span style="" class="label label-<?php echo $error[0]?>"><?php echo $error[1]?></span><br/>
 	  	-->
-	  	<span style="font-size:14px;color:red;font-weight: bold;"><?=$error[1]?></span><br/>
-	  	<?=$error[2]?><br/>
+	  	<span style="font-size:14px;color:red;font-weight: bold;"><?php echo $error[1]?></span><br/>
+	  	<?php echo $error[2]?><br/>
 	  		<?php if(!empty($error[3]) && is_array($error[3])){?>
 	  			
 		  		<?php foreach($error[3] as $command){?>
 		  		<span class="label label-inverse">
-		  		<?=$command?></span><br/>
+		  		<?php echo $command?></span><br/>
 		  		<?php }?>
 		  		
 		  	<?php }?>
@@ -248,7 +248,7 @@ if(!$isDataFolderExists){
   	<div class="row-fluid" style="height:10px;">
       <div class="span12" style="padding:5px;">
         <p style="text-align:center;font-size: 10px;">
-        <?=APP_NAME?> All rights reserved.
+        <?php echo APP_NAME?> All rights reserved.
     	</p>
       </div>
     </div>

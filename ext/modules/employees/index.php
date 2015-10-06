@@ -26,8 +26,8 @@ define('MODULE_PATH',dirname(__FILE__));
 include APP_BASE_PATH.'header.php';
 include APP_BASE_PATH.'modulejslibs.inc.php';
 ?>
-<script type="text/javascript" src="<?=BASE_URL.'js/raphael-min.js?v='.$jsVersion?>"></script>
-<script type="text/javascript" src="<?=BASE_URL.'js/graffle.js?v='.$jsVersion?>"></script>
+<script type="text/javascript" src="<?php echo BASE_URL.'js/raphael-min.js?v='.$jsVersion?>"></script>
+<script type="text/javascript" src="<?php echo BASE_URL.'js/graffle.js?v='.$jsVersion?>"></script>
 <div class="span9">
 			  
 	<ul class="nav nav-tabs" id="modTab" style="margin-bottom:0px;margin-left:5px;border-bottom: none;">

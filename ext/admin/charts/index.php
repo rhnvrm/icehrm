@@ -6,18 +6,18 @@ include APP_BASE_PATH.'header.php';
 include APP_BASE_PATH.'modulejslibs.inc.php';
 ?>
 
-<link href="<?=BASE_URL.'js/nvd3/src/nv.d3.css?v='.$jsVersion?>" rel="stylesheet" type="text/css">
+<link href="<?php echo BASE_URL.'js/nvd3/src/nv.d3.css?v='.$jsVersion?>" rel="stylesheet" type="text/css">
 
-<script src="<?=BASE_URL.'js/nvd3/lib/d3.v3.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/nv.d3.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/tooltip.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/utils.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/models/legend.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/models/axis.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/models/multiBar.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/models/discreteBar.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/src/models/discreteBarChart.js?v='.$jsVersion?>"></script>
-<script src="<?=BASE_URL.'js/nvd3/stream_layers.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/lib/d3.v3.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/nv.d3.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/tooltip.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/utils.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/models/legend.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/models/axis.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/models/multiBar.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/models/discreteBar.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/src/models/discreteBarChart.js?v='.$jsVersion?>"></script>
+<script src="<?php echo BASE_URL.'js/nvd3/stream_layers.js?v='.$jsVersion?>"></script>
 
 <style type="text/css">
 svg .tooltip { opacity: 1; }

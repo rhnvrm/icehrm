@@ -26,8 +26,8 @@ define('MODULE_PATH',dirname(__FILE__));
 include APP_BASE_PATH.'header.php';
 include APP_BASE_PATH.'modulejslibs.inc.php';
 ?>
-<script type="text/javascript" src="<?=BASE_URL.'js/d3js/d3.js?v='.$jsVersion?>"></script>
-<script type="text/javascript" src="<?=BASE_URL.'js/d3js/d3.layout.js?v='.$jsVersion?>"></script>
+<script type="text/javascript" src="<?php echo BASE_URL.'js/d3js/d3.js?v='.$jsVersion?>"></script>
+<script type="text/javascript" src="<?php echo BASE_URL.'js/d3js/d3.layout.js?v='.$jsVersion?>"></script>
 
 <style type="text/css">
 

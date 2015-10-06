@@ -83,8 +83,8 @@
 		<p id="verifyModelBody">
 			<b>Step 1:</b><br/>
 			Please get your Instance Key from here:<br/> 
-			<a target="_blank" href="http://icehrm.com/generateInstanceKey.php?id=<?=$baseService->getInstanceId()?>">
-			http://icehrm.com/generateInstanceKey.php?id=<?=$baseService->getInstanceId()?>
+			<a target="_blank" href="http://icehrm.com/generateInstanceKey.php?id=<?php echo $baseService->getInstanceId()?>">
+			http://icehrm.com/generateInstanceKey.php?id=<?php echo $baseService->getInstanceId()?>
 			</a>
 			
 			<br/><b>Step 2:</b><br/>
@@ -135,7 +135,7 @@
 	                $employees = $baseService->get('Employee');
 	                foreach($employees as $empTemp){
 	                ?>
-	                <option value="<?=$empTemp->id?>"><?=$empTemp->first_name." ".$empTemp->last_name?></option>
+	                <option value="<?php echo $empTemp->id?>"><?php echo $empTemp->first_name." ".$empTemp->last_name?></option>
 	                <?php }?>
 	                </select>
 	                </div>

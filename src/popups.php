@@ -93,7 +93,7 @@
 	                $profiles = BaseService::getInstance()->get($profileClass);
 	                foreach($profiles as $empTemp){
 	                ?>
-	                <option value="<?=$empTemp->id?>"><?=$empTemp->first_name." ".$empTemp->last_name?></option>
+	                <option value="<?php echo $empTemp->id?>"><?php echo $empTemp->first_name." ".$empTemp->last_name?></option>
 	                <?php }?>
 	                </select>
 	                </div>

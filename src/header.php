@@ -77,66 +77,66 @@ include('configureUIManager.php');
 <html>
     <head>
 	    <meta charset="utf-8">
-	    <title><?=APP_NAME?></title>
+	    <title><?php echo APP_NAME?></title>
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	    <meta name="description" content="">
 	    <meta name="author" content="">
 	
-	    <link href="<?=BASE_URL?>themecss/bootstrap.min.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>themecss/font-awesome.min.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>themecss/ionicons.min.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>themecss/bootstrap.min.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>themecss/font-awesome.min.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>themecss/ionicons.min.css" rel="stylesheet">
 	    
 	    
 	    
 		
-		<script type="text/javascript" src="<?=BASE_URL?>js/jquery2.0.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>js/jquery2.0.2.min.js"></script>
 		
-	    <script src="<?=BASE_URL?>themejs/bootstrap.js"></script>
-		<script src="<?=BASE_URL?>js/jquery.placeholder.js"></script>
-		<script src="<?=BASE_URL?>js/base64.js"></script>
+	    <script src="<?php echo BASE_URL?>themejs/bootstrap.js"></script>
+		<script src="<?php echo BASE_URL?>js/jquery.placeholder.js"></script>
+		<script src="<?php echo BASE_URL?>js/base64.js"></script>
 
 		
-		<script src="<?=BASE_URL?>js/bootstrap-datepicker.js"></script>
-		<script src="<?=BASE_URL?>js/jquery.timepicker.js"></script>
-		<script src="<?=BASE_URL?>js/bootstrap-datetimepicker.js"></script>
-		<script src="<?=BASE_URL?>js/select2/select2.min.js"></script>
-		<script src="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/js/bootstrap-colorpicker.min.js"></script>
+		<script src="<?php echo BASE_URL?>js/bootstrap-datepicker.js"></script>
+		<script src="<?php echo BASE_URL?>js/jquery.timepicker.js"></script>
+		<script src="<?php echo BASE_URL?>js/bootstrap-datetimepicker.js"></script>
+		<script src="<?php echo BASE_URL?>js/select2/select2.min.js"></script>
+		<script src="<?php echo BASE_URL?>js/bootstrap-colorpicker-2.1.1/js/bootstrap-colorpicker.min.js"></script>
 
         <!--fullcaledar-->
 
-        <link href="<?=BASE_URL?>js/fullcaledar/fullcalendar.css" rel="stylesheet">
-        <link href="<?=BASE_URL?>js/fullcaledar/fullcalendar.print.css" rel="stylesheet" media="print">
-        <script src="<?=BASE_URL?>js/fullcaledar/lib/moment.min.js"></script>
-        <script src="<?=BASE_URL?>js/fullcaledar/fullcalendar.min.js"></script>
+        <link href="<?php echo BASE_URL?>js/fullcaledar/fullcalendar.css" rel="stylesheet">
+        <link href="<?php echo BASE_URL?>js/fullcaledar/fullcalendar.print.css" rel="stylesheet" media="print">
+        <script src="<?php echo BASE_URL?>js/fullcaledar/lib/moment.min.js"></script>
+        <script src="<?php echo BASE_URL?>js/fullcaledar/fullcalendar.min.js"></script>
 
-	    <link href="<?=BASE_URL?>themecss/datatables/dataTables.bootstrap.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>css/jquery.timepicker.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>css/datepicker.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>js/select2/select2.css" rel="stylesheet">
-	    <link href="<?=BASE_URL?>js/bootstrap-colorpicker-2.1.1/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>themecss/datatables/dataTables.bootstrap.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>css/jquery.timepicker.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>css/datepicker.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>js/select2/select2.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>js/bootstrap-colorpicker-2.1.1/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 	    
-	    <link href="<?=BASE_URL?>themecss/AdminLTE.css" rel="stylesheet">
+	    <link href="<?php echo BASE_URL?>themecss/AdminLTE.css" rel="stylesheet">
 	    
-	    <script src="<?=BASE_URL?>themejs/plugins/datatables/jquery.dataTables.js?v=<?=$jsVersion?>"></script>
-		<script src="<?=BASE_URL?>themejs/plugins/datatables/dataTables.bootstrap.js?v=<?=$jsVersion?>"></script>
-		<script src="<?=BASE_URL?>themejs/AdminLTE/app.js"></script>
-	    
-	    
-	    <link href="<?=BASE_URL?>css/style.css?v=<?=$cssVersion?>" rel="stylesheet">
+	    <script src="<?php echo BASE_URL?>themejs/plugins/datatables/jquery.dataTables.js?v=<?php echo $jsVersion?>"></script>
+		<script src="<?php echo BASE_URL?>themejs/plugins/datatables/dataTables.bootstrap.js?v=<?php echo $jsVersion?>"></script>
+		<script src="<?php echo BASE_URL?>themejs/AdminLTE/app.js"></script>
 	    
 	    
-	    <script type="text/javascript" src="<?=BASE_URL?>js/date.js"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>js/json2.js"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>js/CrockfordInheritance.v0.1.js"></script>
+	    <link href="<?php echo BASE_URL?>css/style.css?v=<?php echo $cssVersion?>" rel="stylesheet">
+	    
+	    
+	    <script type="text/javascript" src="<?php echo BASE_URL?>js/date.js"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>js/json2.js"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>js/CrockfordInheritance.v0.1.js"></script>
 	
-		<script type="text/javascript" src="<?=BASE_URL?>api/Base.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/AdapterBase.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/FormValidation.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/Notifications.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/TimeUtils.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/AesCrypt.js?v=<?=$jsVersion?>"></script>
-		<script type="text/javascript" src="<?=BASE_URL?>api/SocialShare.js?v=<?=$jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/Base.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/AdapterBase.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/FormValidation.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/Notifications.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/TimeUtils.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/AesCrypt.js?v=<?php echo $jsVersion?>"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>api/SocialShare.js?v=<?php echo $jsVersion?>"></script>
 		<?php include 'modulejslibs.inc.php';?>
 	
 	
@@ -147,10 +147,10 @@ include('configureUIManager.php');
 	    	<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 	    <![endif]-->
 		<script>
-				var baseUrl = '<?=CLIENT_BASE_URL?>service.php';
-				var CLIENT_BASE_URL = '<?=CLIENT_BASE_URL?>';
+				var baseUrl = '<?php echo CLIENT_BASE_URL?>service.php';
+				var CLIENT_BASE_URL = '<?php echo CLIENT_BASE_URL?>';
 		</script>
-		<script type="text/javascript" src="<?=BASE_URL?>js/app-global.js"></script>
+		<script type="text/javascript" src="<?php echo BASE_URL?>js/app-global.js"></script>
 		
 		
 	
@@ -162,7 +162,7 @@ include('configureUIManager.php');
 		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		
-		  ga('create', '<?=BaseService::getInstance()->getGAKey()?>', 'gamonoid.com');
+		  ga('create', '<?php echo BaseService::getInstance()->getGAKey()?>', 'gamonoid.com');
 		  ga('send', 'pageview');
 	
 	  	</script>
@@ -172,8 +172,8 @@ include('configureUIManager.php');
 		</script>
 		
         <header id="delegationDiv" class="header">
-            <a href="<?=$homeLink?>" class="logo" style="font-family: 'Source Sans Pro', sans-serif;">
-             <?=APP_NAME?>   
+            <a href="<?php echo $homeLink?>" class="logo" style="font-family: 'Source Sans Pro', sans-serif;">
+             <?php echo APP_NAME?>   
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -186,7 +186,7 @@ include('configureUIManager.php');
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                    	<?=UIManager::getInstance()->getMenuItemsHTML();?>
+                    	<?php echo UIManager::getInstance()->getMenuItemsHTML();?>
                     </ul>
                 </div>
             </nav>
@@ -197,7 +197,7 @@ include('configureUIManager.php');
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
-                    <?=UIManager::getInstance()->getProfileBlocks();?>
+                    <?php echo UIManager::getInstance()->getProfileBlocks();?>
                   
                     <ul class="sidebar-menu">
                     	
@@ -206,17 +206,17 @@ include('configureUIManager.php');
 			            
 			            <?php foreach($adminModules as $menu){?>
 			            	<?php if(count($menu['menu']) == 0){continue;}?>
-			            	<li  class="treeview" ref="<?="admin_".str_replace(" ", "_", $menu['name'])?>">			       
+			            	<li  class="treeview" ref="<?php echo "admin_".str_replace(" ", "_", $menu['name'])?>">			       
 			            		<a href="#">
-                                	<i class="fa <?=!isset($mainIcons[$menu['name']])?"fa-th":$mainIcons[$menu['name']];?>"></i></i> <span><?=$menu['name']?></span>
+                                	<i class="fa <?php echo !isset($mainIcons[$menu['name']])?"fa-th":$mainIcons[$menu['name']];?>"></i></i> <span><?php echo $menu['name']?></span>
                                 	<i class="fa fa-angle-left pull-right"></i>
                             	</a>
 			            	
-				            	<ul class="treeview-menu" id="<?="admin_".str_replace(" ", "_", $menu['name'])?>">
+				            	<ul class="treeview-menu" id="<?php echo "admin_".str_replace(" ", "_", $menu['name'])?>">
 				            	<?php foreach ($menu['menu'] as $item){?>
 					            		<li>
-					            			<a href="<?=CLIENT_BASE_URL?>?g=admin&n=<?=$item['name']?>&m=<?="admin_".str_replace(" ", "_", $menu['name'])?>">
-					            			<i class="fa <?=!isset($item['icon'])?"fa-angle-double-right":$item['icon']?>"></i> <?=$item['label']?>
+					            			<a href="<?php echo CLIENT_BASE_URL?>?g=admin&n=<?php echo $item['name']?>&m=<?php echo "admin_".str_replace(" ", "_", $menu['name'])?>">
+					            			<i class="fa <?php echo !isset($item['icon'])?"fa-angle-double-right":$item['icon']?>"></i> <?php echo $item['label']?>
 					            			</a>
 					            		</li>
 				            	<?php }?>
@@ -231,17 +231,17 @@ include('configureUIManager.php');
 			            <?php foreach($userModules as $menu){?>
 			            	
 			            	<?php if(count($menu['menu']) == 0){continue;}?>
-			            	<li  class="treeview" ref="<?="module_".str_replace(" ", "_", $menu['name'])?>">			       
+			            	<li  class="treeview" ref="<?php echo "module_".str_replace(" ", "_", $menu['name'])?>">			       
 			            		<a href="#">
-                                	<i class="fa <?=!isset($mainIcons[$menu['name']])?"fa-th":$mainIcons[$menu['name']];?>"></i></i> <span><?=$menu['name']?></span>
+                                	<i class="fa <?php echo !isset($mainIcons[$menu['name']])?"fa-th":$mainIcons[$menu['name']];?>"></i></i> <span><?php echo $menu['name']?></span>
                                 	<i class="fa fa-angle-left pull-right"></i>
                             	</a>
 			            	
-				            	<ul class="treeview-menu" id="<?="module_".str_replace(" ", "_", $menu['name'])?>">
+				            	<ul class="treeview-menu" id="<?php echo "module_".str_replace(" ", "_", $menu['name'])?>">
 				            	<?php foreach ($menu['menu'] as $item){?>
 				            		<li>
-				            			<a href="<?=CLIENT_BASE_URL?>?g=modules&n=<?=$item['name']?>&m=<?="module_".str_replace(" ", "_", $menu['name'])?>">
-				            			<i class="fa <?=!isset($item['icon'])?"fa-angle-double-right":$item['icon']?>"></i> <?=$item['label']?>
+				            			<a href="<?php echo CLIENT_BASE_URL?>?g=modules&n=<?php echo $item['name']?>&m=<?php echo "module_".str_replace(" ", "_", $menu['name'])?>">
+				            			<i class="fa <?php echo !isset($item['icon'])?"fa-angle-double-right":$item['icon']?>"></i> <?php echo $item['label']?>
 				            			</a>
 				            		</li>
 				            	<?php }?>
@@ -263,9 +263,9 @@ include('configureUIManager.php');
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <?=$meta['label']?>
+                        <?php echo $meta['label']?>
                         <small>
-                        	<?=$meta['menu']?>&nbsp;&nbsp;
+                        	<?php echo $meta['menu']?>&nbsp;&nbsp;
                         	<a href="#" class="helpLink" target="_blank" style="display:none;"><i class="glyphicon glyphicon-question-sign"></i></a>
                         </small>
                     </h1>

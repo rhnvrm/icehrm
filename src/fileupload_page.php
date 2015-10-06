@@ -55,11 +55,11 @@ function clearFileElement (elementName) {
 }
 </script>
 	<div id="upload_form">
-	<form id="upload_data" method="post" action="<?=CLIENT_BASE_URL?>fileupload.php" enctype="multipart/form-data">
-	<input id="file_name" name="file_name" type="hidden" value="<?=$_REQUEST['id']?>"/>
-	<input id="file_group" name="file_group" type="hidden" value="<?=$_REQUEST['file_group']?>"/>
-	<input id="user" name="user" type="hidden" value="<?=$_REQUEST['user']?>"/>
-	<label id="upload_status"><?=$_REQUEST['msg']?></label><input id="file" name="file"  type="file" onChange="if(checkFileType('file','<?=$fileTypes?>')){uploadfile();}"></input>
+	<form id="upload_data" method="post" action="<?php echo CLIENT_BASE_URL?>fileupload.php" enctype="multipart/form-data">
+	<input id="file_name" name="file_name" type="hidden" value="<?php echo $_REQUEST['id']?>"/>
+	<input id="file_group" name="file_group" type="hidden" value="<?php echo $_REQUEST['file_group']?>"/>
+	<input id="user" name="user" type="hidden" value="<?php echo $_REQUEST['user']?>"/>
+	<label id="upload_status"><?php echo $_REQUEST['msg']?></label><input id="file" name="file"  type="file" onChange="if(checkFileType('file','<?php echo $fileTypes?>')){uploadfile();}"></input>
 	</form>
 	</div>
 	<div id="upload_result" style="display:none;text-align: center;">
